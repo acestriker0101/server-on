@@ -34,20 +34,6 @@ if ($app === 'inventory') {
     $_SESSION['attendance_plan_rank'] = $current_rank;
 }
 
-// 複数アプリ割引の判定（他アプリのいずれか一つでも契約していれば適用）
-$inventory_active = (int)$user_data['plan_rank'] > 0;
-$equipment_active = (int)$user_data['equipment_plan_rank'] > 0;
-$attendance_active = (int)$user_data['attendance_plan_rank'] > 0;
-
-$other_apps_active = false;
-if ($app === 'inventory' && ($equipment_active || $attendance_active)) {
-    $other_apps_active = true;
-} elseif ($app === 'equipment' && ($inventory_active || $attendance_active)) {
-    $other_apps_active = true;
-} elseif ($app === 'attendance' && ($inventory_active || $equipment_active)) {
-    $other_apps_active = true;
-}
-
 $trial_used = (int) $user_data['trial_used'];
 
 // トライアル開始処理 (全アプリ対応)
@@ -161,10 +147,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plan_id'])) {
             $params['line_items[0][tax_rates][0]'] = $tax_rate_id;
         }
 
-        // 複数アプリ契約割引の適用
-        if ($other_apps_active) {
-            $params['discounts[0][coupon]'] = 'multi-app-discount-50';
-        }
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
         $response = curl_exec($ch);
@@ -221,11 +203,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plan_id'])) {
             </div>
         <?php endif; ?>
 
-        <?php if ($other_apps_active && $current_rank === 0): ?>
-            <div style="background:#ebf8ff; color:#3182ce; padding:15px; border-radius:8px; margin-bottom:20px; text-align:center; border:1px solid #bee3f8; font-weight:bold;">
-                💡 【複数アプリ割引】他アプリを契約中のお客様には、特別割引クーポンが自動適用されます！
-            </div>
-        <?php endif; ?>
 
         <?php if ($current_rank === 0 && $trial_used === 0): ?>
             <div class="trial-banner">
