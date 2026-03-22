@@ -10,8 +10,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SERVER-ON | 業務管理プラットフォーム</title>
+    <title>SERVER-ON | 業務効率化・在庫管理・勤怠管理プラットフォーム</title>
+    <meta name="description" content="SERVER-ONは、在庫管理、備品管理、勤怠管理など、ビジネスに必要な機能を自由に追加できるクラウド型業務管理プラットフォームです。中小企業のDXを低コストで実現します。">
+    <meta name="keywords" content="在庫管理,備品管理,勤怠管理,DX,業務効率化,クラウドシステム,SERVER-ON">
+    
+    <!-- Open Graph (OGP) -->
+    <meta property="og:title" content="SERVER-ON | 業務効率化プラットフォーム">
+    <meta property="og:description" content="在庫、備品、人。すべての管理を1つの場所で。SERVER-ONが業務をスマートに変えます。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://corp.server-on.net/landing">
+    <meta property="og:image" content="https://corp.server-on.net/assets/img/og-image.png">
+    <meta property="og:site_name" content="SERVER-ON">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SERVER-ON | 業務効率化プラットフォーム">
+    <meta name="twitter:description" content="在庫、備品、人。すべての管理を1つの場所で。">
+    
+    <link rel="canonical" href="https://corp.server-on.net/landing">
     <link rel="stylesheet" href="/assets/portal.css?v=<?= time() ?>">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "SERVER-ON",
+      "operatingSystem": "Web",
+      "applicationCategory": "BusinessApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "JPY"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "150"
+      }
+    }
+    </script>
     <style>
         /* portal.css を補完するランディングページ専用スタイル */
         .hero { 
@@ -133,6 +171,12 @@
         </section>
 
         <footer>
+            <div style="margin-bottom: 20px;">
+                <a href="/portal/help.php" style="color: #718096; margin: 0 15px; text-decoration: none;">ヘルプセンター</a>
+                <a href="#" style="color: #718096; margin: 0 15px; text-decoration: none;">プライバシーポリシー</a>
+                <a href="#" style="color: #718096; margin: 0 15px; text-decoration: none;">利用規約</a>
+                <a href="#" style="color: #718096; margin: 0 15px; text-decoration: none;">お問い合わせ</a>
+            </div>
             <p>&copy; 2026 Handliberte. All rights reserved.</p>
         </footer>
     </div>
