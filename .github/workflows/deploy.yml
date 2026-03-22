@@ -1,0 +1,33 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]  # mainブランチにプッシュされた時に発火
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: SSH Deploy
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_HOST }}     # サーバーのIPアドレス
+        username: ${{ secrets.SERVER_USER }} # SSHユーザー名 (例: root)
+        key: ${{ secrets.SERVER_SSH_KEY }}     # SSH鍵 (秘密鍵)
+        port: 22
+        script: |
+          cd /opt/server
+          # コードの同期
+          git fetch origin main
+          git reset --hard origin/main
+          
+          # 権限の調整 (必要に応じて)
+          # chown -R www-data:www-data .
+          
+          # ライブラリの更新
+          composer install --no-dev --optimize-autoloader --no-interaction
+          
+          echo "Deployment successful!"
