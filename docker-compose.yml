@@ -1,0 +1,47 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - /opt/server:/var/www/html
+      - /opt/server/vendor:/var/www/html/vendor
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  web:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: my-phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_ABSOLUTE_URI: https://corp.server-on.net/phpmyadmin/
+    ports:
+      - "8081:80"
+    restart: always
+
+volumes:
+  db-data:

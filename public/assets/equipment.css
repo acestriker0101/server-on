@@ -1,0 +1,131 @@
+/* --- 共通設定 --- */
+body { 
+    background-color: #f4f7f9; 
+    margin: 0; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+    color: #334155; 
+}
+.container { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 20px; 
+}
+
+/* --- ナビゲーション (上部帯) --- */
+nav {
+    background: #2d3748;
+    color: white;
+    padding: 0 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.logo-area { display: flex; align-items: center; gap: 12px; }
+.logo-main { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; white-space: nowrap; line-height: 1; text-transform: uppercase; }
+.logo-sub { font-size: 15px; color: #4fd1c5; font-weight: bold; line-height: 1; margin-top: 2px; } /* Teal accent for equipment */
+
+.nav-links { display: flex; gap: 25px; align-items: center; }
+.nav-links a { color: white; text-decoration: none; font-size: 14px; font-weight: bold; transition: color 0.2s; line-height: 1; }
+.nav-links a:hover { color: #cbd5e0; }
+.nav-links a.portal-link { color: #a0aec0 !important; font-size: 14px; margin-left: 10px; }
+.nav-links a.logout-link { color: #fca5a5 !important; }
+.nav-links a.logout-link:hover { color: #f87171 !important; }
+
+.menu-toggle {
+    display: none; flex-direction: column; justify-content: space-around; width: 24px; height: 18px;
+    background: transparent; border: none; cursor: pointer; padding: 0; z-index: 1001;
+}
+.menu-toggle span {
+    width: 24px; height: 2px; background-color: white; border-radius: 2px; transition: all 0.3s linear;
+    position: relative; transform-origin: 1px;
+}
+.menu-toggle.active span:nth-child(1) { transform: rotate(45deg); }
+.menu-toggle.active span:nth-child(2) { opacity: 0; }
+.menu-toggle.active span:nth-child(3) { transform: rotate(-45deg); }
+
+/* --- カード・パネル --- */
+.card {
+    background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px;
+    margin-bottom: 25px; box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+.pro-card { border-top: 4px solid #319795; } /* Teal top border for highlighting */
+
+.section-title { font-size: 18px; color: #334155; margin-top: 0; margin-bottom: 20px; font-weight: bold; }
+
+/* --- 入力・汎用ボタン --- */
+.input-group label { display: block; font-size: 12px; color: #64748b; margin-bottom: 6px; font-weight: bold; }
+.t-input {
+    border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; font-size: 14px;
+    color: #334155; width: 100%; box-sizing: border-box; background-color: #fff;
+}
+.t-input:focus { border-color: #319795; outline: none; box-shadow: 0 0 0 2px rgba(49, 151, 149, 0.1); }
+
+.btn-ui {
+    padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer;
+    border: 1px solid #e2e8f0; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+    white-space: nowrap; transition: all 0.2s;
+}
+.btn-blue { background-color: #319795; color: white; border: none; } /* Reusing Teal for main actions */
+.btn-blue:hover { background-color: #2c7a7b; }
+.btn-green { background-color: #10b981; color: white; border: none; }
+.btn-green:hover { background-color: #059669; }
+.btn-gray { background-color: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+.btn-gray:hover { background-color: #e2e8f0; }
+
+/* --- バッジ・ステータス表示 (Equipment特有) --- */
+.status-badge {
+    font-size: 11px; font-weight: bold; padding: 4px 8px; border-radius: 4px;
+}
+.status-active { background: #f0fff4; color: #38a169; border: 1px solid #c6f6d5; }
+.status-repair { background: #fffaf0; color: #dd6b20; border: 1px solid #feebc8; }
+.status-disposed { background: #fff5f5; color: #e53e3e; border: 1px solid #fed7d7; }
+.status-loan { background: #ebf8ff; color: #3182ce; border: 1px solid #bee3f8; }
+
+.indicator-dot { height: 8px; width: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+.dot-urgent { background-color: #e53e3e; }
+.dot-warning { background-color: #dd6b20; }
+.dot-ok { background-color: #38a169; }
+
+/* --- 装備品タブ (Equipment特有) --- */
+.tab-nav { display: flex; gap: 20px; border-bottom: 1px solid #e2e8f0; margin-bottom: 20px; }
+.tab-item {
+    padding: 10px 0; font-size: 14px; font-weight: 600; color: #64748b;
+    cursor: pointer; text-decoration: none; transition: color 0.2s; border-bottom: 2px solid transparent;
+}
+.tab-item:hover { color: #319795; }
+.tab-item.active { color: #319795; border-bottom: 2px solid #319795; }
+
+/* --- マスタテーブル --- */
+.master-table {
+    width: 100%; border-collapse: collapse; background: white; border-radius: 8px; border: 1px solid #e5eaf0; overflow: hidden;
+}
+.master-table th { background: #f8fafc; padding: 12px 15px; text-align: left; font-size: 13px; color: #64748b; font-weight: bold; border-bottom: 2px solid #e2e8f0; }
+.master-table td { padding: 12px 15px; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #334155; }
+.master-table input, .master-table select { border: 1px solid transparent; background: transparent; width: 100%; padding: 5px; font-size: 13px; border-radius: 4px; }
+.master-table input:focus, .master-table select:focus { border: 1px solid #319795; background: #fff; outline: none; }
+
+/* --- スマホ対応 (Responsive) --- */
+@media (max-width: 768px) {
+    nav { position: relative; padding: 0 15px; justify-content: space-between; height: 50px; }
+    .menu-toggle { display: flex; }
+    .nav-links {
+        display: none; position: absolute; top: 50px; left: 0; width: 100%; background: #2d3748;
+        flex-direction: column; padding: 10px 0; z-index: 1000; gap: 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .nav-links.active { display: flex; }
+    .nav-links a { padding: 15px 25px; width: 100%; box-sizing: border-box; border-bottom: 1px solid #4a5568; margin-left: 0; }
+    .nav-links a.portal-link { color: #cbd5e0 !important; }
+    
+    .container { padding: 15px; }
+    
+    .master-table { display: block; overflow-x: auto; white-space: nowrap; }
+    .master-table td, .master-table th { padding: 10px 12px; }
+    
+    .tab-nav { gap: 10px; overflow-x: auto; white-space: nowrap; padding-bottom: 5px; }
+}

@@ -1,0 +1,27 @@
+# 設定・環境変数 (セキュリティのためGitHubには絶対に入れない)
+.env
+.env.local
+.env.production
+
+# 依存ライブラリ (各環境で composer install して生成)
+/vendor/
+/composer.phar
+
+# データベースバックアップやダンプ
+*.sql
+!init_db.sql  # 初期構築用SQLはあえて含める場合
+db_backup.sql
+
+# ログファイル
+*.log
+logs/
+
+# OS/エディタ一時ファイル
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# その他、自動生成される一時ファイル
+/tmp/
+*.tmp
