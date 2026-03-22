@@ -29,9 +29,27 @@ $app_features = [
     ],
 ];
 
+// Stripeから価格情報を取得
+function getStripePrice($price_id, $secret_key) {
+    if (!$price_id) return '¥-';
+    $ch = curl_init("https://api.stripe.com/v1/prices/$price_id");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_USERPWD, $secret_key . ':');
+    $response = curl_exec($ch);
+    $data = json_decode($response, true);
+    curl_close($ch);
+    $amount = $data['unit_amount'] ?? 0;
+    return '¥' . number_format($amount);
+}
+
+$env = Config::get();
+$price_basic = getStripePrice($env['STRIPE_PRICE_INVENTORY_BASIC'] ?? null, $env['STRIPE_SECRET_KEY']);
+$price_std = getStripePrice($env['STRIPE_PRICE_INVENTORY_STANDARD'] ?? null, $env['STRIPE_SECRET_KEY']);
+$price_pro = getStripePrice($env['STRIPE_PRICE_INVENTORY_PRO'] ?? null, $env['STRIPE_SECRET_KEY']);
+
 // プラン比較データ
  $comparison = [
-     ['label' => '月額料金（税込）', 'basic' => '¥5,500', 'std' => '¥8,800', 'pro' => '¥11,000'],
+     ['label' => '月額料金（税込）', 'basic' => $price_basic, 'std' => $price_std, 'pro' => $price_pro],
      ['label' => '一度にできる入出庫数', 'basic' => '5件', 'std' => '5件', 'pro' => '10件'],
      ['label' => '在庫状況の確認', 'basic' => '✔', 'std' => '✔', 'pro' => '✔'],
      ['label' => '商品マスタ', 'basic' => '—', 'std' => '△<sup>*1,2</sup>', 'pro' => '✔'],

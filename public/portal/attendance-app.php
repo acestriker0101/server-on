@@ -29,9 +29,27 @@ $app_features = [
     ],
 ];
 
+// Stripeから価格情報を取得
+function getStripePrice($price_id, $secret_key) {
+    if (!$price_id) return '¥-';
+    $ch = curl_init("https://api.stripe.com/v1/prices/$price_id");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_USERPWD, $secret_key . ':');
+    $response = curl_exec($ch);
+    $data = json_decode($response, true);
+    curl_close($ch);
+    $amount = $data['unit_amount'] ?? 0;
+    return '¥' . number_format($amount);
+}
+
+$env = Config::get();
+$price_basic = getStripePrice($env['STRIPE_PRICE_ATTENDANCE_BASIC'] ?? null, $env['STRIPE_SECRET_KEY']);
+$price_std = getStripePrice($env['STRIPE_PRICE_ATTENDANCE_STANDARD'] ?? null, $env['STRIPE_SECRET_KEY']);
+$price_pro = getStripePrice($env['STRIPE_PRICE_ATTENDANCE_PRO'] ?? null, $env['STRIPE_SECRET_KEY']);
+
 // プラン比較データ
  $comparison = [
-     ['label' => '月額料金（税込）', 'basic' => '¥8,800', 'std' => '¥11,000', 'pro' => '¥15,400'],
+     ['label' => '月額料金（税込）', 'basic' => $price_basic, 'std' => $price_std, 'pro' => $price_pro],
      ['label' => '登録スタッフ数', 'basic' => '5名', 'std' => '20名', 'pro' => '無制限'],
      ['label' => '1タップ打刻', 'basic' => '✔', 'std' => '✔', 'pro' => '✔'],
      ['label' => '有給・欠勤申請', 'basic' => '—', 'std' => '✔', 'pro' => '✔'],

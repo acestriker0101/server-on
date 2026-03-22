@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             $target_rank = 3;
         } elseif ($app === 'equipment') {
             $col = 'equipment_plan_rank';
-            $target_rank = 2; // 備品管理の最高位はスタンダード(2)
+            $target_rank = 3; // 備品管理もプロ(3)まで開放
         }
         
         $stmt = $db->prepare("UPDATE users SET {$col} = ?, trial_used = 1, trial_ends_at = ? WHERE id = ?");
@@ -120,9 +120,13 @@ if ($app === 'inventory') {
     $app_title = "勤怠管理システム";
     $app_color = "#38a169";
 } elseif ($app === 'equipment') {
+    $p1 = getStripePlan($env['STRIPE_PRICE_EQUIPMENT_BASIC'] ?? null, $env['STRIPE_SECRET_KEY']);
     $p2 = getStripePlan($env['STRIPE_PRICE_EQUIPMENT_STANDARD'] ?? null, $env['STRIPE_SECRET_KEY']);
+    $p3 = getStripePlan($env['STRIPE_PRICE_EQUIPMENT_PRO'] ?? null, $env['STRIPE_SECRET_KEY']);
     $plans = [
-        2 => ['name' => $p2['name'], 'price' => $p2['price'], 'price_id' => $env['STRIPE_PRICE_EQUIPMENT_STANDARD'] ?? '', 'features' => ['備品の一元管理', '貸出処理・バーコード検索', '消耗品の在庫・補充管理'], 'color' => '#2c7a7b']
+        1 => ['name' => $p1['name'], 'price' => $p1['price'], 'price_id' => $env['STRIPE_PRICE_EQUIPMENT_BASIC'] ?? '', 'features' => ['備品・消耗品の基本管理', '入庫・出庫履歴機能'], 'color' => '#4a5568'],
+        2 => ['name' => $p2['name'], 'price' => $p2['price'], 'price_id' => $env['STRIPE_PRICE_EQUIPMENT_STANDARD'] ?? '', 'features' => ['備品の一元管理', '貸出処理・バーコード検索', '消耗品の在庫・補充管理'], 'color' => '#2c7a7b'],
+        3 => ['name' => $p3['name'], 'price' => $p3['price'], 'price_id' => $env['STRIPE_PRICE_EQUIPMENT_PRO'] ?? '', 'features' => ['高度な資産分析', 'CSV一括入出力登録', '減価償却シミュレーション'], 'color' => '#805ad5']
     ];
     $app_title = "備品管理システム";
     $app_color = "#2c7a7b";
