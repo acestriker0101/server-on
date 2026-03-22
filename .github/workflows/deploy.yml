@@ -17,7 +17,7 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}     # サーバーのIPアドレス
         username: ${{ secrets.SERVER_USER }} # SSHユーザー名 (例: root)
         key: ${{ secrets.SERVER_SSH_KEY }}     # SSH鍵 (秘密鍵)
-        port: 22
+        port: ${{ secrets.SERVER_PORT }}       # ポート番号（2220番など）
         script: |
           cd /opt/server
           # コードの同期
