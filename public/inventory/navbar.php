@@ -13,7 +13,7 @@
         <a href="items">商品マスタ</a>
         <a href="suppliers">仕入先マスタ</a>
         <?php endif; ?>
-        <a href="/portal/help.php?app=inventory">ヘルプ</a>
+        <a href="/portal/help?app=inventory">ヘルプ</a>
         <a href="/portal/" class="portal-link">ポータル</a>
     </div>
     <button class="menu-toggle" id="menu-toggle">

@@ -12,7 +12,7 @@
             <a href="/attendance_mgmt/staff">スタッフ管理</a>
             <a href="/attendance_mgmt/requests">承認依頼</a>
             <a href="/attendance_mgmt/reports">勤務表確認</a>
-            <a href="/portal/help.php?app=attendance">ヘルプ</a>
+            <a href="/portal/help?app=attendance">ヘルプ</a>
             <a href="/portal/" class="portal-link">ポータル</a>
         <?php endif; ?>
         <a href="/attendance_mgmt/logout" class="logout-link">ログアウト</a>

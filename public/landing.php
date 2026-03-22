@@ -172,10 +172,10 @@
 
         <footer>
             <div style="margin-bottom: 20px;">
-                <a href="/portal/help.php" style="color: #718096; margin: 0 15px; text-decoration: none;">ヘルプセンター</a>
-                <a href="#" style="color: #718096; margin: 0 15px; text-decoration: none;">プライバシーポリシー</a>
-                <a href="#" style="color: #718096; margin: 0 15px; text-decoration: none;">利用規約</a>
-                <a href="#" style="color: #718096; margin: 0 15px; text-decoration: none;">お問い合わせ</a>
+                <a href="/portal/help" style="color: #718096; margin: 0 15px; text-decoration: none;">ヘルプセンター</a>
+                <a href="/privacy" style="color: #718096; margin: 0 15px; text-decoration: none;">プライバシーポリシー</a>
+                <a href="/terms" style="color: #718096; margin: 0 15px; text-decoration: none;">利用規約</a>
+                <a href="/tokushoho" style="color: #718096; margin: 0 15px; text-decoration: none;">特定商取引法に基づく表記</a>
             </div>
             <p>&copy; 2026 Handliberte. All rights reserved.</p>
         </footer>
