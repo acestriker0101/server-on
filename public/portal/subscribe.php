@@ -181,6 +181,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plan_id'])) {
         .feature-list { list-style: none; padding: 0; margin: 20px 0; flex-grow: 1; }
         .feature-list li { margin-bottom: 12px; font-size: 14px; color: #4a5568; display: flex; align-items: center; }
         .feature-list li::before { content: "✓"; color: <?= $app_color ?>; margin-right: 10px; font-weight: bold; }
+        .feature-list li.no-check::before { content: ""; margin-right: 0; }
+        .feature-list li.no-check { color: #718096; font-size: 13px; list-style: none; }
         .btn-plan { width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
         .btn-upgrade { background: #2d3748; color: white; }
         .btn-downgrade { background: #edf2f7; color: #4a5568; border: 1px solid #cbd5e0; }
@@ -221,7 +223,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plan_id'])) {
                     <div class="price">¥<?= number_format($p['price']) ?><span>/月</span></div>
                     <ul class="feature-list">
                         <?php foreach ($p['features'] as $f): ?>
-                            <li><?= htmlspecialchars($f) ?></li><?php endforeach; ?>
+                            <li <?= (strpos($f, '※') === 0) ? 'class="no-check"' : '' ?>><?= htmlspecialchars($f) ?></li>
+                        <?php endforeach; ?>
                     </ul>
                     <form method="POST">
                         <input type="hidden" name="plan_id" value="<?= $id ?>">
