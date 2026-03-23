@@ -26,6 +26,7 @@ if (isset($_POST['export_csv'])) {
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename="attendance_' . $month . '.csv"');
     $output = fopen('php://output', 'w');
+    fwrite($output, "\xEF\xBB\xBF");
     fputcsv($output, ['日付', '出勤時刻', '退勤時刻', '残業', '深夜', 'GPS(緯度)', 'GPS(経度)']);
     foreach ($records as $r) {
         fputcsv($output, [
