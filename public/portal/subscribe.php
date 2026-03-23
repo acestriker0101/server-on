@@ -207,7 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plan_id'])) {
         <?php if ($current_rank === 0 && $trial_used === 0): ?>
             <div class="trial-banner">
                 <h3 style="margin-top:0; color:#c05621;">🎁 30日間無料トライアル</h3>
-                <p style="font-size:14px; color:#744210; margin-bottom:15px;"><?= ($app === 'equipment') ? 'スタンダードプラン' : 'プロプラン' ?>を今すぐ30日間お試しいただけます。</p>
+                <p style="font-size:14px; color:#744210; margin-bottom:15px;">プロプランを今すぐ30日間お試しいただけます。</p>
                 <form method="POST"><input type="hidden" name="action" value="trial"><button type="submit" class="btn-plan" style="background:#ed8936; color:white; max-width:250px;">無料体験を開始する</button></form>
             </div>
         <?php endif; ?>
