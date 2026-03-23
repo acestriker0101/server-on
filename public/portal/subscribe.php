@@ -88,9 +88,9 @@ if ($app === 'inventory') {
     $p2 = getStripePlan($env['STRIPE_PRICE_INVENTORY_STANDARD'] ?? null, $env['STRIPE_SECRET_KEY']);
     $p3 = getStripePlan($env['STRIPE_PRICE_INVENTORY_PRO'] ?? null, $env['STRIPE_SECRET_KEY']);
     $plans = [
-        1 => ['name' => $p1['name'], 'price' => $p1['price'], 'price_id' => $env['STRIPE_PRICE_INVENTORY_BASIC'] ?? '', 'features' => ['入出庫処理（1件ずつ）', '在庫の基本確認'], 'color' => '#4a5568'],
-        2 => ['name' => $p2['name'], 'price' => $p2['price'], 'price_id' => $env['STRIPE_PRICE_INVENTORY_STANDARD'] ?? '', 'features' => ['入出庫処理（5件同時可）', 'マスタ管理'], 'color' => '#3182ce'],
-        3 => ['name' => $p3['name'], 'price' => $p3['price'], 'price_id' => $env['STRIPE_PRICE_INVENTORY_PRO'] ?? '', 'features' => ['在庫分析レポート', '棚卸表の自動作成'], 'color' => '#805ad5']
+        1 => ['name' => $p1['name'], 'price' => $p1['price'], 'price_id' => $env['STRIPE_PRICE_INVENTORY_BASIC'] ?? '', 'features' => ['入出庫（1度に5件まで）', '現在の在庫状況の確認', '簡易入出庫履歴'], 'color' => '#4a5568'],
+        2 => ['name' => $p2['name'], 'price' => $p2['price'], 'price_id' => $env['STRIPE_PRICE_INVENTORY_STANDARD'] ?? '', 'features' => ['入出庫（1度に5件まで）', '商品・仕入先マスタ管理', '※JAN/CSV機能は未対応'], 'color' => '#3182ce'],
+        3 => ['name' => $p3['name'], 'price' => $p3['price'], 'price_id' => $env['STRIPE_PRICE_INVENTORY_PRO'] ?? '', 'features' => ['入出庫（1度に10件まで）', '在庫分析レポート・棚卸', 'JAN登録・CSV一括入出力'], 'color' => '#805ad5']
     ];
     $app_title = "在庫管理システム";
     $app_color = "#3182ce";
@@ -99,9 +99,9 @@ if ($app === 'inventory') {
     $p2 = getStripePlan($env['STRIPE_PRICE_ATTENDANCE_STANDARD'] ?? null, $env['STRIPE_SECRET_KEY']);
     $p3 = getStripePlan($env['STRIPE_PRICE_ATTENDANCE_PRO'] ?? null, $env['STRIPE_SECRET_KEY']);
     $plans = [
-        1 => ['name' => $p1['name'], 'price' => $p1['price'], 'price_id' => $env['STRIPE_PRICE_ATTENDANCE_BASIC'] ?? '', 'features' => ['スマホ打刻', '出退勤履歴管理'], 'color' => '#4a5568'],
-        2 => ['name' => $p2['name'], 'price' => $p2['price'], 'price_id' => $env['STRIPE_PRICE_ATTENDANCE_STANDARD'] ?? '', 'features' => ['シフト管理機能', '有給休暇の管理'], 'color' => '#38a169'],
-        3 => ['name' => $p3['name'], 'price' => $p3['price'], 'price_id' => $env['STRIPE_PRICE_ATTENDANCE_PRO'] ?? '', 'features' => ['高度な勤怠分析', '外部給与システム連携'], 'color' => '#2f855a']
+        1 => ['name' => $p1['name'], 'price' => $p1['price'], 'price_id' => $env['STRIPE_PRICE_ATTENDANCE_BASIC'] ?? '', 'features' => ['スマホ打刻・履歴管理', '登録スタッフ：最大5名'], 'color' => '#4a5568'],
+        2 => ['name' => $p2['name'], 'price' => $p2['price'], 'price_id' => $env['STRIPE_PRICE_ATTENDANCE_STANDARD'] ?? '', 'features' => ['登録スタッフ：最大20名', '有給・欠勤申請', 'シフト管理連携対応'], 'color' => '#38a169'],
+        3 => ['name' => $p3['name'], 'price' => $p3['price'], 'price_id' => $env['STRIPE_PRICE_ATTENDANCE_PRO'] ?? '', 'features' => ['登録スタッフ：無制限', '高度な勤怠分析・詳細レポ', '全ての管理機能を開放'], 'color' => '#2f855a']
     ];
     $app_title = "勤怠管理システム";
     $app_color = "#38a169";
@@ -110,9 +110,9 @@ if ($app === 'inventory') {
     $p2 = getStripePlan($env['STRIPE_PRICE_EQUIPMENT_STANDARD'] ?? null, $env['STRIPE_SECRET_KEY']);
     $p3 = getStripePlan($env['STRIPE_PRICE_EQUIPMENT_PRO'] ?? null, $env['STRIPE_SECRET_KEY']);
     $plans = [
-        1 => ['name' => $p1['name'], 'price' => $p1['price'], 'price_id' => $env['STRIPE_PRICE_EQUIPMENT_BASIC'] ?? '', 'features' => ['備品・消耗品の基本管理', '入庫・出庫履歴機能'], 'color' => '#4a5568'],
-        2 => ['name' => $p2['name'], 'price' => $p2['price'], 'price_id' => $env['STRIPE_PRICE_EQUIPMENT_STANDARD'] ?? '', 'features' => ['備品の一元管理', '貸出処理・バーコード検索', '消耗品の在庫・補充管理'], 'color' => '#2c7a7b'],
-        3 => ['name' => $p3['name'], 'price' => $p3['price'], 'price_id' => $env['STRIPE_PRICE_EQUIPMENT_PRO'] ?? '', 'features' => ['高度な資産分析', 'CSV一括入出力登録', '減価償却シミュレーション'], 'color' => '#805ad5']
+        1 => ['name' => $p1['name'], 'price' => $p1['price'], 'price_id' => $env['STRIPE_PRICE_EQUIPMENT_BASIC'] ?? '', 'features' => ['保管場所管理', '登録数：10件まで'], 'color' => '#4a5568'],
+        2 => ['name' => $p2['name'], 'price' => $p2['price'], 'price_id' => $env['STRIPE_PRICE_EQUIPMENT_STANDARD'] ?? '', 'features' => ['修理履歴管理', '登録数：100件まで', '貸出予約フル機能'], 'color' => '#2c7a7b'],
+        3 => ['name' => $p3['name'], 'price' => $p3['price'], 'price_id' => $env['STRIPE_PRICE_EQUIPMENT_PRO'] ?? '', 'features' => ['登録数：無制限', 'CSV一括登録対応', '減価償却シミュレーター'], 'color' => '#805ad5']
     ];
     $app_title = "備品管理システム";
     $app_color = "#2c7a7b";
