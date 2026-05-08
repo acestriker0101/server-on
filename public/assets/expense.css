@@ -1,0 +1,42 @@
+:root {
+  --primary: #d946ef;
+  --primary-dark: #c026d3;
+  --bg-main: #fdf4ff;
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border: #f0abfc;
+}
+
+body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-main); color: var(--text-main); margin:0; }
+.container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+.card { background: var(--card-bg); border-radius: 12px; padding: 25px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(125, 211, 252, 0.1); margin-bottom: 30px; }
+.section-title { font-size: 24px; font-weight: 800; color: #701a75; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+
+.t-input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; margin-top: 5px; box-sizing: border-box; }
+.t-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(217, 70, 239, 0.1); }
+
+.btn-ui { display: inline-flex; align-items:center; justify-content:center; padding: 12px 24px; border-radius: 8px; font-weight: 700; font-size: 14px; text-decoration: none; cursor: pointer; transition: 0.2s; border: none; }
+.btn-blue { background: var(--primary); color: white; }
+.btn-blue:hover { translate: 0 -2px; box-shadow: 0 4px 12px rgba(217, 70, 239, 0.3); }
+
+.expense-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+.stat-box { background: white; padding: 20px; border-radius: 12px; border: 1px solid var(--border); }
+.stat-label { font-size: 12px; color: var(--text-muted); font-weight: bold; }
+.stat-value { font-size: 28px; font-weight: 900; color: var(--primary-dark); margin-top: 5px; }
+
+.master-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; }
+.master-table th { background: #fae8ff; padding: 15px; text-align: left; font-size: 12px; font-weight: bold; color: #a21caf; text-transform: uppercase; }
+.master-table td { padding: 15px; border-bottom: 1px solid #fdf4ff; }
+
+.status-badge { padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
+.status-pending { background: #fef3c7; color: #92400e; }
+.status-approved { background: #dcfce7; color: #166534; }
+.status-rejected { background: #fee2e2; color: #991b1b; }
+
+nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: white; border-bottom: 1px solid #f0abfc; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.nav-links a { color: #64748b; text-decoration: none; margin-left: 20px; font-size: 14px; font-weight: 600; }
+.nav-links a:hover { color: var(--primary); }
+.portal-link { color: var(--primary) !important; font-weight: 800 !important; }
+
+@media (max-width: 768px) { .expense-stat-grid { grid-template-columns: 1fr; } }

@@ -11,7 +11,7 @@ $user_id = $_SESSION['user_id'];
 $db = DB::get();
 
 // ユーザー情報を再取得してロールとプランを確認
-$stmt = $db->prepare("SELECT company_id, role, parent_id, attendance_plan_rank FROM users WHERE id = ?");
+$stmt = $db->prepare("SELECT company_id, role, parent_id, attendance_plan_rank, is_attendance_admin FROM users WHERE id = ?");
 $stmt->execute([$user_id]);
 $u_info = $stmt->fetch();
 
@@ -19,6 +19,10 @@ $company_id = $u_info['company_id'] ?? '';
 $user_role = $u_info['role'] ?? 'admin';
 $parent_id = $u_info['parent_id'];
 $plan_rank = $u_info['attendance_plan_rank'];
+$is_attendance_admin = (bool)($u_info['is_attendance_admin'] ?? 0);
+
+// 実質的な管理者かどうかを判定 (元々の管理者、または権限を付与されたスタッフ)
+$is_admin_access = ($user_role === 'admin' || $is_attendance_admin);
 
 // スタッフの場合は管理者のプランを引き継ぐ
 if ($user_role === 'staff' && $parent_id) {

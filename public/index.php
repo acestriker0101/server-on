@@ -1,6 +1,7 @@
 <?php
 session_set_cookie_params(0, '/');
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
+date_default_timezone_set('Asia/Tokyo');
 
 require_once __DIR__ . '/../lib/config.php';
 $env = Config::get();
@@ -82,12 +83,21 @@ $routes = [
     'equipment_mgmt/analysis' => 'equipment_mgmt/analysis.php',
     'attendance_mgmt'     => 'attendance_mgmt/index.php',
     'attendance_mgmt/login'   => 'attendance_mgmt/login.php',
-    'attendance_mgmt/staff'   => 'attendance_mgmt/staff_mgmt.php',
+    'attendance_mgmt/staff'   => 'hr_mgmt/index.php',
     'attendance_mgmt/requests' => 'attendance_mgmt/requests.php',
     'attendance_mgmt/settings' => 'attendance_mgmt/settings.php',
     'attendance_mgmt/leave' => 'attendance_mgmt/leave.php',
     'attendance_mgmt/reports' => 'attendance_mgmt/reports.php',
     'attendance_mgmt/shifts' => 'attendance_mgmt/shifts.php',
+    'attendance_mgmt/workflows' => 'hr_mgmt/workflows.php',
+    'attendance_mgmt/profile' => 'attendance_mgmt/profile.php',
+    'hr_mgmt'             => 'hr_mgmt/index.php',
+    'hr_mgmt/departments' => 'hr_mgmt/departments.php',
+    'hr_mgmt/workflows'   => 'hr_mgmt/workflows.php',
+    'expense_mgmt'        => 'expense_mgmt/index.php',
+    'expense_mgmt/history' => 'expense_mgmt/history.php',
+    'salary_mgmt'         => 'salary_mgmt/index.php',
+    'salary_mgmt/slip'    => 'salary_mgmt/slip.php',
     'inventory'           => 'inventory/index.php',
     'inventory/status'    => 'inventory/status.php',
     'inventory/items'     => 'inventory/items.php',

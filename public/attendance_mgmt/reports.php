@@ -4,7 +4,7 @@ require_once __DIR__ . '/auth.php';
 $month = $_GET['month'] ?? date('Y-m');
 $target_user_id = $user_id;
 
-if ($user_role === 'admin' && isset($_GET['staff_id'])) {
+if ($is_admin_access && isset($_GET['staff_id'])) {
     $target_user_id = $_GET['staff_id'];
 }
 
@@ -15,9 +15,10 @@ $records = $stmt->fetchAll();
 
 // スタッフリスト (管理者用)
 $staff_list = [];
-if ($user_role === 'admin') {
+if ($is_admin_access) {
+    $admin_id = ($user_role === 'admin') ? $user_id : $parent_id;
     $stmt = $db->prepare("SELECT id, name FROM users WHERE parent_id = ? AND role = 'staff'");
-    $stmt->execute([$user_id]);
+    $stmt->execute([$admin_id]);
     $staff_list = $stmt->fetchAll();
 }
 
@@ -56,7 +57,7 @@ if (isset($_POST['export_csv'])) {
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h2 class="section-title" style="margin:0;">月間勤務表</h2>
             <form method="GET" style="display:flex; gap:10px;">
-                <?php if($user_role === 'admin'): ?>
+                <?php if($is_admin_access): ?>
                     <select name="staff_id" class="t-input" onchange="this.form.submit()">
                         <option value="<?= $user_id ?>">自分 (管理者)</option>
                         <?php foreach($staff_list as $s): ?>

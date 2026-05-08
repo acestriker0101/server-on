@@ -8,7 +8,7 @@
         <a href="/equipment_mgmt/consumables">消耗品管理</a>
         <a href="/equipment_mgmt/analysis">分析レポート</a>
         <a href="/portal/help?app=equipment">ヘルプ</a>
-        <a href="/portal/" class="portal-link">ポータル</a>
+        <a href="/portal/" class="portal-link">ポータルに戻る</a>
     </div>
     <button class="menu-toggle" id="menu-toggle">
         <span></span>

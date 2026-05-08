@@ -14,7 +14,7 @@
         <a href="suppliers">仕入先マスタ</a>
         <?php endif; ?>
         <a href="/portal/help?app=inventory">ヘルプ</a>
-        <a href="/portal/" class="portal-link">ポータル</a>
+        <a href="/portal/" class="portal-link">ポータルに戻る</a>
     </div>
     <button class="menu-toggle" id="menu-toggle">
         <span></span>
