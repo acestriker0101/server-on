@@ -30,4 +30,8 @@ jobs:
           # ライブラリの更新
           composer install --no-dev --optimize-autoloader --no-interaction
           
+          # Dockerコンテナの再起動
+          docker-compose down
+          docker-compose up -d
+          
           echo "Deployment successful!"
