@@ -171,7 +171,6 @@ $is_limit_reached = ($max_staff !== -1 && $current_staff_count >= $max_staff);
     <style>
         :root { --hr-primary: #805ad5; --hr-primary-dark: #6b46c1; --hr-bg: #f9f7ff; }
         body { font-family: 'Outfit', 'Noto Sans JP', sans-serif; background: var(--hr-bg); }
-        nav { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .logo-hr { font-weight: 800; font-size: 20px; color: var(--hr-primary); }
         .section-title { font-weight: 800; color: #2d3748; margin-bottom: 25px; border-left: 5px solid var(--hr-primary); padding-left: 15px; }
         .badge { padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }

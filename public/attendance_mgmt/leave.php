@@ -3,24 +3,23 @@ require_once __DIR__ . '/auth.php';
 
 // 日本の有給付与日数計算 (比例付与対応)
 function calculateEarnedDays($hire_date, $working_style, $weekly_days) {
-    if (!$hire_date) return 0;
+    if (!$hire_date) return ['current' => 0, 'total_active' => 0];
     $d1 = new DateTime($hire_date);
     $d2 = new DateTime();
     $diff = $d1->diff($d2);
     $months = ($diff->y * 12) + $diff->m;
     
-    if ($months < 6) return 0;
+    if ($months < 6) return ['current' => 0, 'total_active' => 0];
 
-    // 勤続年数インデックス (0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5)
-    $years_idx = 0;
-    if ($months >= 78) $years_idx = 6;
-    elseif ($months >= 66) $years_idx = 5;
-    elseif ($months >= 54) $years_idx = 4;
-    elseif ($months >= 42) $years_idx = 3;
-    elseif ($months >= 30) $years_idx = 2;
-    elseif ($months >= 18) $years_idx = 1;
+    $idx1 = -1; $idx2 = -1;
+    if ($months >= 78) { $idx1 = 6; $idx2 = 5; } // 6.5年以上
+    elseif ($months >= 66) { $idx1 = 5; $idx2 = 4; }
+    elseif ($months >= 54) { $idx1 = 4; $idx2 = 3; }
+    elseif ($months >= 42) { $idx1 = 3; $idx2 = 2; }
+    elseif ($months >= 30) { $idx1 = 2; $idx2 = 1; }
+    elseif ($months >= 18) { $idx1 = 1; $idx2 = 0; }
+    elseif ($months >= 6) { $idx1 = 0; }
 
-    // 週の労働日数に応じた付与日数テーブル
     $table = [
         'standard' => [10, 11, 12, 14, 16, 18, 20],
         4 => [7, 8, 9, 10, 12, 13, 15],
@@ -28,11 +27,13 @@ function calculateEarnedDays($hire_date, $working_style, $weekly_days) {
         2 => [3, 4, 4, 5, 6, 6, 7],
         1 => [1, 2, 2, 2, 3, 3, 3]
     ];
-
     $key = ($working_style === 'standard') ? 'standard' : (int)$weekly_days;
     if (!isset($table[$key])) $key = 'standard';
     
-    return $table[$key][$years_idx] ?? 0;
+    $c = ($idx1 >= 0) ? ($table[$key][$idx1] ?? 0) : 0;
+    $p = ($idx2 >= 0) ? ($table[$key][$idx2] ?? 0) : 0;
+    
+    return ['current' => $c, 'total_active' => $c + $p];
 }
 
 $message = "";
@@ -93,7 +94,7 @@ if ($is_admin_access) {
 $stmt = $db->prepare("SELECT hire_date, working_style, weekly_days, daily_hours FROM users WHERE id = ?");
 $stmt->execute([$target_user_id]);
 $target_info = $stmt->fetch();
-$suggested_days = calculateEarnedDays($target_info['hire_date'], $target_info['working_style'], $target_info['weekly_days']);
+$earned = calculateEarnedDays($target_info['hire_date'], $target_info['working_style'], $target_info['weekly_days']);
 
 // アラート
 $show_alert = false;
@@ -182,9 +183,10 @@ if ($balance['grant_date']) {
                 <div style="padding:10px; background:#ebf8ff; border:1px solid #bee3f8; border-radius:6px; margin-bottom:15px; font-size:12px; color:#2c5282;">
                     働き方区分: <strong><?= $target_info['working_style'] === 'standard' ? '通常' : '週'.$target_info['weekly_days'].'日勤務' ?></strong><br>
                     入社日: <?= $target_info['hire_date'] ?: '未登録' ?> | 
-                    現在の付与目安: <strong style="font-size:14px;"><?= $suggested_days ?>日</strong>
+                    有効な有休合計（過去2年分）: <strong style="font-size:14px;"><?= $earned['total_active'] ?>日</strong> 
+                    <span style="font-size:11px;">(うち直近付与分: <?= $earned['current'] ?>日)</span>
                     <?php if($target_info['hire_date']): ?>
-                        <button type="button" onclick="document.getElementById('total-in').value='<?= $suggested_days ?>'" style="margin-top:5px; background:white; border:1px solid #3182ce; border-radius:4px; padding:3px 8px; cursor:pointer; color:#3182ce; font-weight:bold;">この日数を適用する</button>
+                        <button type="button" onclick="document.getElementById('total-in').value='<?= $earned['total_active'] ?>'" style="margin-top:5px; background:white; border:1px solid #3182ce; border-radius:4px; padding:3px 8px; cursor:pointer; color:#3182ce; font-weight:bold;">この日数を適用する</button>
                     <?php endif; ?>
                 </div>
                 <form method="POST">

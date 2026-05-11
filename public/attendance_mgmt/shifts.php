@@ -157,8 +157,10 @@ $all_shifts = $stmt->fetchAll(PDO::FETCH_ASSOC); $shifts_map = []; foreach ($all
         .grid-table { width: 100%; border-collapse: collapse; min-width: 1000px; font-size: 13px; }
         .grid-table th, .grid-table td { border: 1px solid #edf2f7; padding: 8px 4px; text-align: center; }
         .grid-table th { background: #f7fafc; position: sticky; top: 0; z-index: 10; }
-        .grid-table .staff-name-col { position: sticky; left: 0; background: #fff; z-index: 11; width: 120px; text-align: left; padding-left: 15px; font-weight: bold; border-right: 2px solid #edf2f7; }
-        .grid-table .total-col { background: #fdf2f8; font-weight: bold; border-left: 2px solid #edf2f7; }
+        .grid-table .staff-name-col { position: sticky; left: 0; background: #fff; z-index: 12; min-width: 180px; text-align: left; padding-left: 15px; font-weight: bold; border-right: 2px solid #edf2f7; }
+        .grid-table .total-col { background: #fdf2f8; font-weight: bold; border-left: 2px solid #edf2f7; position: sticky; right: 0; z-index: 11; }
+        .grid-table thead .total-col { z-index: 12; }
+        .grid-table thead .staff-name-col { z-index: 13; }
         .grid-table .sunday { color: #e53e3e; background: #fff5f5; }
         .grid-table .saturday { color: #3182ce; background: #ebf8ff; }
         .symbol-select { width: 45px; height: 32px; border: 1px solid transparent; background: transparent; text-align: center; cursor: pointer; border-radius: 4px; appearance: none; }
