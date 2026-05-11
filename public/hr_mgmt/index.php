@@ -75,9 +75,17 @@ if (isset($_POST['update_dept_order'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_staff_details'])) {
     $sid = $_POST['staff_id']; 
     $is_att_admin = isset($_POST['is_attendance_admin']) ? 1 : 0;
-    $db->prepare("UPDATE users SET name = ?, login_id = ?, email = ?, hire_date = ?, is_attendance_admin = ?, department_id = ?, position_id = ?, working_style = ?, weekly_days = ?, daily_hours = ? WHERE id = ? AND parent_id = ?")
-       ->execute([$_POST['name'], $_POST['login_id'], $_POST['email'], $_POST['hire_date'] ?: null, $is_att_admin, $_POST['department_id'] ?: null, $_POST['position_id'] ?: null, $_POST['working_style'], (int)$_POST['weekly_days'], (float)$_POST['daily_hours'], $sid, $target_parent_id]);
-    $message = "スタッフ情報を更新しました。";
+    try {
+        $db->prepare("UPDATE users SET name = ?, login_id = ?, email = ?, hire_date = ?, is_attendance_admin = ?, department_id = ?, position_id = ?, working_style = ?, weekly_days = ?, daily_hours = ? WHERE id = ? AND parent_id = ?")
+           ->execute([$_POST['name'], $_POST['login_id'], $_POST['email'], $_POST['hire_date'] ?: null, $is_att_admin, $_POST['department_id'] ?: null, $_POST['position_id'] ?: null, $_POST['working_style'], (int)$_POST['weekly_days'], (float)$_POST['daily_hours'], $sid, $target_parent_id]);
+        $message = "スタッフ情報を更新しました。";
+    } catch(PDOException $e) {
+        if ($e->getCode() == 23000) {
+            $error = "更新エラー: 入力されたメールアドレス（またはログインID）は既に他のスタッフによって使用されています。";
+        } else {
+            $error = "更新エラー: " . $e->getMessage();
+        }
+    }
 }
 
 // スタッフ追加
@@ -86,6 +94,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_staff'])) {
         $stmt = $db->prepare("INSERT INTO users (company_id, login_id, name, email, password, role, parent_id, hire_date, status, department_id, position_id) VALUES (?, ?, ?, ?, ?, 'staff', ?, ?, 1, ?, ?)");
         $stmt->execute([$company_id, $_POST['login_id'], $_POST['name'], $_POST['email'], password_hash($_POST['password'], PASSWORD_DEFAULT), $target_parent_id, $_POST['hire_date'] ?: null, $_POST['department_id'] ?: null, $_POST['position_id'] ?: null]);
         $message = "スタッフを追加しました。";
+    } catch(PDOException $e) {
+        if ($e->getCode() == 23000) {
+            $error = "登録エラー: 入力されたメールアドレス（またはログインID）は既に他のスタッフによって使用されています。別のものを指定してください。";
+        } else {
+            $error = "登録エラー: " . $e->getMessage();
+        }
     } catch(Exception $e) {
         $error = "登録エラー: " . $e->getMessage();
     }
@@ -117,7 +131,7 @@ $staff_members = $stmt->fetchAll();
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>人事管理 | SERVER-ON</title>
+    <title>人事・組織管理 | SERVER-ON</title>
     <link rel="stylesheet" href="/assets/attendance.css?v=<?= time() ?>">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -138,7 +152,7 @@ $staff_members = $stmt->fetchAll();
 </head>
 <body>
     <nav>
-        <div class="logo-hr">SERVER-ON <span style="font-weight:400; font-size:14px; color:#a0aec0;">人事管理</span></div>
+        <div class="logo-hr">SERVER-ON <span style="font-weight:400; font-size:14px; color:#a0aec0;">人事・組織管理</span></div>
         <div class="nav-links">
             <a href="/hr_mgmt/workflows" style="color:#718096; text-decoration:none; margin-right:15px; font-size:13px; font-weight:700;">承認ルート設定</a>
             <a href="/portal/" style="color:#718096; text-decoration:none; font-size:13px;">ポータルに戻る</a>
