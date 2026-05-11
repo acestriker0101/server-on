@@ -31,6 +31,17 @@ try {
 
 } catch(PDOException $e) {}
 
+// --- テスト用: プラン強制変更 ---
+if (isset($_GET['force_plan'])) {
+    $db->prepare("UPDATE users SET plan_rank = ? WHERE id = ?")->execute([(int)$_GET['force_plan'], $target_parent_id]);
+    // 反映させるために変数を上書き
+    $plan_rank = (int)$_GET['force_plan'];
+    $max_staff = -1;
+    if ($plan_rank === 1) $max_staff = 5;
+    elseif ($plan_rank === 2) $max_staff = 10;
+    $message = "【テスト用】現在のプランをランク " . $plan_rank . " (上限: ".($max_staff===-1?'無制限':$max_staff."名").") に変更しました。";
+}
+
 // --- 会社情報管理 ---
 if (isset($_POST['save_company_info'])) {
     $stmt = $db->prepare("INSERT INTO company_info (parent_id, company_name, postal_code, address, phone, representative_name, invoice_number) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE company_name=VALUES(company_name), postal_code=VALUES(postal_code), address=VALUES(address), phone=VALUES(phone), representative_name=VALUES(representative_name), invoice_number=VALUES(invoice_number)");
