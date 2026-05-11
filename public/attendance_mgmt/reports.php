@@ -73,7 +73,7 @@ if (isset($_POST['export_csv'])) {
         <div class="card">
             <div style="display:flex; justify-content:flex-end; margin-bottom:15px;">
                 <form method="POST">
-                    <button type="submit" name="export_csv" class="btn-ui btn-blue">CSVエクスポート</button>
+                    <button type="submit" name="export_csv" class="btn-ui btn-blue">CSV出力</button>
                 </form>
             </div>
             <table class="master-table">

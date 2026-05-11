@@ -186,7 +186,10 @@ $is_limit_reached = ($max_staff !== -1 && $current_staff_count >= $max_staff);
 </head>
 <body>
     <nav>
-        <div class="logo-hr">SERVER-ON <span style="font-weight:400; font-size:14px; color:#a0aec0;">人事・組織管理</span></div>
+        <div class="logo-area">
+            <span class="logo-main">SERVER-ON</span>
+            <span class="logo-sub" style="margin-left: 5px; color: #a0aec0;">人事・組織管理</span>
+        </div>
         <div class="nav-links">
             <a href="/hr_mgmt/workflows" style="color:#718096; text-decoration:none; margin-right:15px; font-size:13px; font-weight:700;">承認ルート設定</a>
             <a href="/portal/" style="color:#718096; text-decoration:none; font-size:13px;">ポータルに戻る</a>
@@ -454,7 +457,7 @@ $is_limit_reached = ($max_staff !== -1 && $current_staff_count >= $max_staff);
                         <div style="font-size:11px; font-weight:800; color:#718096; margin-bottom:10px; text-align:left; border-bottom:1px solid #edf2f7; padding-bottom:5px;">直轄・未所属スタッフ</div>
                         <?php foreach($no_dept_staff as $ns): ?>
                             <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px; text-align:left;">
-                                <div style="width:28px; height:28px; background:#edf2f7; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#4a5568;"><?= mb_substr($ns['name'],0,1) ?></div>
+                                <div style="width:28px; height:28px; background:#edf2f7; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; line-height:1; box-sizing:border-box; padding-top:2px; font-size:12px; font-weight:700; color:#4a5568;"><?= mb_substr($ns['name'],0,1) ?></div>
                                 <div style="flex:1;">
                                     <div style="font-size:13px; font-weight:800;"><?= htmlspecialchars($ns['name']) ?></div>
                                     <?php if($ns['pos_name']): ?>
@@ -486,7 +489,7 @@ $is_limit_reached = ($max_staff !== -1 && $current_staff_count >= $max_staff);
                         <?php else: ?>
                             <?php foreach($dept_staff as $ds): ?>
                             <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px; border-bottom:1px solid #f7fafc; padding-bottom:8px;">
-                                <div style="width:36px; height:36px; background:#edf2f7; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; color:#4a5568;"><?= mb_substr($ds['name'],0,1) ?></div>
+                                <div style="width:36px; height:36px; background:#edf2f7; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; line-height:1; box-sizing:border-box; padding-top:2px; font-size:14px; font-weight:700; color:#4a5568;"><?= mb_substr($ds['name'],0,1) ?></div>
                                 <div style="flex:1;">
                                     <div style="font-size:13px; font-weight:800;"><?= htmlspecialchars($ds['name']) ?></div>
                                     <?php if($ds['pos_name']): ?>

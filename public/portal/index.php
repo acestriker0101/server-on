@@ -63,24 +63,16 @@ $plan_info = [
 ];
 
 $apps = [
-    'inventory' => [
-        'name' => '📦 在庫管理システム',
-        'desc' => '商品の入出庫、在庫推移、棚卸し作業をデジタル化します。',
-        'path' => '/inventory',
-        'color' => '#3182ce',
-        'rank' => $ranks['inventory'],
-        'admin_only' => true
-    ],
-    'equipment' => [
-        'name' => '🛠️ 備品管理システム',
-        'desc' => 'PC・什器・車両などの資産状況、購入履歴を統合管理します。',
-        'path' => '/equipment_mgmt',
-        'color' => '#2c7a7b',
-        'rank' => $ranks['equipment'],
+    'hr' => [
+        'name' => '🤝 人事・組織管理',
+        'desc' => 'スタッフの入社、異動、組織図管理、個人情報を一元管理します。',
+        'path' => '/hr_mgmt',
+        'color' => '#805ad5',
+        'rank' => $ranks['hr'],
         'admin_only' => true
     ],
     'attendance' => [
-        'name' => '⏰ 勤怠管理システム',
+        'name' => '⏰ 勤怠管理',
         'desc' => '出退勤の打刻、休憩、シフト、有休管理をデジタル化します。',
         'path' => '/attendance_mgmt',
         'color' => '#38a169',
@@ -88,7 +80,7 @@ $apps = [
         'admin_only' => false
     ],
     'expense' => [
-        'name' => '🚄 交通費・経費管理',
+        'name' => '🚄 交通費・経理管理',
         'desc' => '交通費や経費精算の申請・承認フローを簡素化します。',
         'path' => '/expense_mgmt',
         'color' => '#d946ef',
@@ -96,19 +88,27 @@ $apps = [
         'admin_only' => false
     ],
     'salary' => [
-        'name' => '💴 給与明細・管理',
+        'name' => '💴 給与・明細管理',
         'desc' => '給与明細の発行、賞与、年末調整のデジタル配布を支援します。',
         'path' => '/salary_mgmt',
         'color' => '#f59e0b',
         'rank' => $ranks['salary'],
         'admin_only' => false
     ],
-    'hr' => [
-        'name' => '🤝 人事管理システム',
-        'desc' => 'スタッフの入社、異動、組織図管理、個人情報を一元管理します。',
-        'path' => '/hr_mgmt',
-        'color' => '#805ad5',
-        'rank' => $ranks['hr'],
+    'equipment' => [
+        'name' => '🛠️ 備品管理',
+        'desc' => 'PC・什器・車両などの資産状況、購入履歴を統合管理します。',
+        'path' => '/equipment_mgmt',
+        'color' => '#2c7a7b',
+        'rank' => $ranks['equipment'],
+        'admin_only' => true
+    ],
+    'inventory' => [
+        'name' => '📦 在庫管理',
+        'desc' => '商品の入出庫、在庫推移、棚卸し作業をデジタル化します。',
+        'path' => '/inventory',
+        'color' => '#3182ce',
+        'rank' => $ranks['inventory'],
         'admin_only' => true
     ]
 ];

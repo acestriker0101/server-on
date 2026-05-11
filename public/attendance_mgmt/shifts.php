@@ -163,7 +163,7 @@ $all_shifts = $stmt->fetchAll(PDO::FETCH_ASSOC); $shifts_map = []; foreach ($all
         .grid-table .saturday { color: #3182ce; background: #ebf8ff; }
         .symbol-select { width: 45px; height: 32px; border: 1px solid transparent; background: transparent; text-align: center; cursor: pointer; border-radius: 4px; appearance: none; }
         .symbol-select:hover { background: #f1f5f9; border-color: #cbd5e1; }
-        .symbol-badge { display: inline-block; width: 28px; height: 28px; line-height: 28px; border-radius: 50%; color: white; font-weight: bold; font-size: 11px; }
+        .symbol-badge { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; line-height: 1; border-radius: 50%; color: white; font-weight: bold; font-size: 11px; padding-top: 1px; box-sizing: border-box; }
         .t-input { border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; font-size: 14px; width:100%; box-sizing:border-box; }
         .form-group { margin-bottom: 15px; } .form-group label { display: block; font-size: 12px; color: #718096; margin-bottom: 5px; }
     </style>
@@ -172,7 +172,7 @@ $all_shifts = $stmt->fetchAll(PDO::FETCH_ASSOC); $shifts_map = []; foreach ($all
     <?php include __DIR__ . '/navbar.php'; ?>
     <div class="container" style="max-width: 1400px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 class="section-title" style="margin:0;">シフトスケジュール</h2>
+            <h2 class="section-title" style="margin:0;">シフト管理</h2>
             <div style="display:flex; gap:15px; align-items:center;">
                 <form method="GET" style="display:flex; gap:10px; align-items:center;">
                     <input type="hidden" name="tab" value="<?= htmlspecialchars($active_tab) ?>">
@@ -183,8 +183,8 @@ $all_shifts = $stmt->fetchAll(PDO::FETCH_ASSOC); $shifts_map = []; foreach ($all
                     <input type="month" name="month" value="<?= $month ?>" class="t-input" onchange="this.form.submit()" style="width:160px;">
                 </form>
                 <?php if($is_admin_access && $active_tab === 'monthly'): ?>
-                    <a href="?export=1&month=<?= $month ?>&dept_id=<?= $target_dept_id ?>" class="btn-ui" style="background:#48bb78; color:white;">CSV抽出</a>
-                    <button onclick="document.getElementById('import-div').style.display='block'" class="btn-ui">CSV入込</button>
+                    <a href="?export=1&month=<?= $month ?>&dept_id=<?= $target_dept_id ?>" class="btn-ui" style="background:#48bb78; color:white;">CSV出力</a>
+                    <button onclick="document.getElementById('import-div').style.display='block'" class="btn-ui">CSV取込</button>
                 <?php endif; ?>
             </div>
         </div>

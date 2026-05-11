@@ -122,6 +122,13 @@ if ($balance['grant_date']) {
     <div class="container" style="max-width: 1000px;">
         <h2 class="section-title">有給休暇管理</h2>
 
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:15px; border-radius:8px; margin-bottom:20px; font-size:12px; color:#475569; line-height:1.5;">
+            <strong style="color:#2d3748;">【有給休暇の法的ルール】</strong><br>
+            ・入社から半年（6ヶ月）継続勤務した場合に初回の有給が付与されます。<br>
+            ・有給休暇の有効期限（消滅）は付与日から<strong>2年間</strong>です。<br>
+            ・休暇取得時は、法律に基づき<strong>古い（付与日が早い）有給から優先して消化</strong>されます。
+        </div>
+
         <?php if($show_alert): ?>
             <div class="alert-box">
                 <div style="font-size: 32px;">⏰</div>

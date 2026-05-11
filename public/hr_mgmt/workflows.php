@@ -74,7 +74,10 @@ foreach ($workflows as $w) {
 </head>
 <body>
     <nav>
-        <div class="logo-hr">SERVER-ON <span style="font-weight:400; font-size:14px; color:#a0aec0;">人事・組織管理 - 承認ルート設定</span></div>
+        <div class="logo-area">
+            <span class="logo-main">SERVER-ON</span>
+            <span class="logo-sub" style="margin-left: 5px; color: #a0aec0;">人事・組織管理 - 承認ルート設定</span>
+        </div>
         <div class="nav-links">
             <a href="/hr_mgmt" style="color:#718096; text-decoration:none; margin-right:15px; font-size:13px;">人事・組織管理に戻る</a>
             <a href="/portal/" style="color:#718096; text-decoration:none; font-size:13px;">ポータルに戻る</a>
