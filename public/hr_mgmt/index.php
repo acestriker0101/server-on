@@ -4,6 +4,19 @@ require_once __DIR__ . '/auth.php';
 $message = ""; $error = "";
 $target_parent_id = $user_id; // HR管理は基本的にオーナーが管理
 
+// スキーマの自動更新（マイグレーション）
+try {
+    $db->exec("CREATE TABLE IF NOT EXISTS company_info (parent_id INT PRIMARY KEY, company_name VARCHAR(255) NOT NULL, postal_code VARCHAR(20), address VARCHAR(255), phone VARCHAR(50), representative_name VARCHAR(255), updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    $db->exec("ALTER TABLE hr_departments ADD COLUMN display_order INT DEFAULT 0 AFTER name");
+} catch(PDOException $e) {}
+
+// --- 会社情報管理 ---
+if (isset($_POST['save_company_info'])) {
+    $stmt = $db->prepare("INSERT INTO company_info (parent_id, company_name, postal_code, address, phone, representative_name) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE company_name=VALUES(company_name), postal_code=VALUES(postal_code), address=VALUES(address), phone=VALUES(phone), representative_name=VALUES(representative_name)");
+    $stmt->execute([$target_parent_id, $_POST['company_name'], $_POST['postal_code'], $_POST['address'], $_POST['phone'], $_POST['representative_name']]);
+    $message = "会社情報を保存しました。";
+}
+
 // --- 部署管理 ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_dept'])) {
     $stmt = $db->prepare("INSERT INTO hr_departments (parent_id, name) VALUES (?, ?)");
@@ -13,15 +26,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_dept'])) {
 
 if (isset($_POST['delete_dept'])) {
     $db->prepare("DELETE FROM hr_departments WHERE id = ? AND parent_id = ?")->execute([$_POST['dept_id'], $target_parent_id]);
+    $message = "部署を削除しました。";
+}
+
+if (isset($_POST['update_dept'])) {
+    $db->prepare("UPDATE hr_departments SET name = ? WHERE id = ? AND parent_id = ?")->execute([$_POST['update_name'], $_POST['update_id'], $target_parent_id]);
+    $message = "部署名を更新しました。";
+}
+
+if (isset($_POST['update_dept_order'])) {
+    if(!empty($_POST['display_order'])){
+        foreach($_POST['display_order'] as $id => $order) {
+            $db->prepare("UPDATE hr_departments SET display_order = ? WHERE id = ? AND parent_id = ?")->execute([(int)$order, $id, $target_parent_id]);
+        }
+        $message = "部署の並び順を更新しました。";
+    }
 }
 
 // --- スタッフ詳細設定 ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_staff_details'])) {
     $sid = $_POST['staff_id']; 
     $is_att_admin = isset($_POST['is_attendance_admin']) ? 1 : 0;
-    $db->prepare("UPDATE users SET is_attendance_admin = ?, department_id = ?, working_style = ?, weekly_days = ?, daily_hours = ? WHERE id = ? AND parent_id = ?")
-       ->execute([$is_att_admin, $_POST['department_id'] ?: null, $_POST['working_style'], (int)$_POST['weekly_days'], (float)$_POST['daily_hours'], $sid, $target_parent_id]);
-    $message = "情報を更新しました。";
+    $db->prepare("UPDATE users SET name = ?, login_id = ?, email = ?, hire_date = ?, is_attendance_admin = ?, department_id = ?, working_style = ?, weekly_days = ?, daily_hours = ? WHERE id = ? AND parent_id = ?")
+       ->execute([$_POST['name'], $_POST['login_id'], $_POST['email'], $_POST['hire_date'] ?: null, $is_att_admin, $_POST['department_id'] ?: null, $_POST['working_style'], (int)$_POST['weekly_days'], (float)$_POST['daily_hours'], $sid, $target_parent_id]);
+    $message = "スタッフ情報を更新しました。";
 }
 
 // スタッフ追加
@@ -40,9 +68,13 @@ if (isset($_POST['delete_staff'])) {
 }
 
 // 取得
-$stmt = $db->prepare("SELECT * FROM hr_departments WHERE parent_id = ? ORDER BY id ASC");
+$stmt = $db->prepare("SELECT * FROM hr_departments WHERE parent_id = ? ORDER BY display_order ASC, id ASC");
 $stmt->execute([$target_parent_id]);
 $depts = $stmt->fetchAll();
+
+$stmt = $db->prepare("SELECT * FROM company_info WHERE parent_id = ?");
+$stmt->execute([$target_parent_id]);
+$comp = $stmt->fetch();
 
 $stmt = $db->prepare("SELECT u.*, d.name as dept_name FROM users u LEFT JOIN hr_departments d ON u.department_id = d.id WHERE u.parent_id = ? AND u.role = 'staff' ORDER BY u.id DESC");
 $stmt->execute([$target_parent_id]);
@@ -85,24 +117,77 @@ $staff_members = $stmt->fetchAll();
         <?php if($message): ?><div style="padding:15px; background:#f0fff4; color:#276749; border-radius:8px; margin-bottom:25px;"><?= $message ?></div><?php endif; ?>
         <?php if($error): ?><div style="padding:15px; background:#fff5f5; color:#c53030; border-radius:8px; margin-bottom:25px;"><?= $error ?></div><?php endif; ?>
 
-        <div style="display:grid; grid-template-columns: 320px 1fr; gap:30px;">
+        <!-- 会社・組織情報 -->
+        <div class="card" style="border-left: 4px solid var(--hr-primary);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h4 style="margin:0;">🏢 会社・組織情報</h4>
+                <button class="btn-hr btn-mini" onclick="toggleEdit('company-info-panel')" style="padding:6px 12px; font-size:12px;">情報を編集する</button>
+            </div>
+            
+            <div id="company-info-panel" class="edit-panel" style="margin-top:0;">
+                <form method="POST">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
+                        <div><label style="font-size:11px; font-weight:700;">会社・組織名</label><input type="text" name="company_name" class="t-input" value="<?= htmlspecialchars($comp['company_name'] ?? '') ?>" required placeholder="株式会社サンプル"></div>
+                        <div><label style="font-size:11px; font-weight:700;">代表者名</label><input type="text" name="representative_name" class="t-input" value="<?= htmlspecialchars($comp['representative_name'] ?? '') ?>" placeholder="代表 太郎"></div>
+                    </div>
+                    <div style="display:grid; grid-template-columns: 150px 1fr 1fr; gap:15px; margin-bottom:15px;">
+                        <div><label style="font-size:11px; font-weight:700;">郵便番号</label><input type="text" name="postal_code" class="t-input" value="<?= htmlspecialchars($comp['postal_code'] ?? '') ?>" placeholder="100-0001"></div>
+                        <div style="grid-column: span 2;"><label style="font-size:11px; font-weight:700;">所在地</label><input type="text" name="address" class="t-input" value="<?= htmlspecialchars($comp['address'] ?? '') ?>" placeholder="東京都千代田区..."></div>
+                    </div>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
+                        <div><label style="font-size:11px; font-weight:700;">電話番号</label><input type="text" name="phone" class="t-input" value="<?= htmlspecialchars($comp['phone'] ?? '') ?>" placeholder="03-0000-0000"></div>
+                    </div>
+                    <div style="text-align:right;">
+                        <button type="submit" name="save_company_info" class="btn-hr">保存する</button>
+                    </div>
+                </form>
+            </div>
+            
+            <?php if($comp): ?>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
+                <div><span style="color:#718096; font-size:11px; display:block;">会社・組織名</span><strong style="font-size:16px;"><?= htmlspecialchars($comp['company_name']) ?></strong></div>
+                <div><span style="color:#718096; font-size:11px; display:block;">代表者</span><strong><?= htmlspecialchars($comp['representative_name']) ?></strong></div>
+                <div><span style="color:#718096; font-size:11px; display:block;">所在地</span>〒<?= htmlspecialchars($comp['postal_code']) ?><br><?= htmlspecialchars($comp['address']) ?></div>
+                <div><span style="color:#718096; font-size:11px; display:block;">電話番号</span><?= htmlspecialchars($comp['phone']) ?></div>
+            </div>
+            <?php else: ?>
+            <div style="color:#a0aec0; font-size:13px;">会社情報が未登録です。情報を編集して登録してください。</div>
+            <?php endif; ?>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 350px 1fr; gap:30px;">
             <div>
                 <div class="sidebar">
-                    <h4 style="margin:0 0 15px 0;">🏢 部署・グループ</h4>
+                    <h4 style="margin:0 0 15px 0;">📂 部署・グループ</h4>
                     <p style="font-size:11px; color:#718096; margin-bottom:15px;">部署を作成してスタッフを分類します。</p>
                     <form method="POST" style="display:flex; gap:8px; margin-bottom:20px;">
-                        <input type="text" name="dept_name" class="t-input" placeholder="部署名" required style="flex:1;">
+                        <input type="text" name="dept_name" class="t-input" placeholder="新しい部署名" required style="flex:1;">
                         <button type="submit" name="add_dept" class="btn-hr" style="padding:8px 12px;">追加</button>
                     </form>
-                    <div style="max-height: 500px; overflow-y:auto;">
-                        <?php foreach($depts as $d): ?>
-                            <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; border-bottom:1px solid #edf2f7;">
-                                <span style="font-weight:700; font-size:14px;"><?= htmlspecialchars($d['name']) ?></span>
-                                <form method="POST" onsubmit="return confirm('この部署を削除しますか？')">
-                                    <input type="hidden" name="dept_id" value="<?= $d['id'] ?>">
-                                    <button type="submit" name="delete_dept" style="background:none; border:none; color:#e53e3e; cursor:pointer; font-size:11px;">削除</button>
-                                </form>
+                    
+                    <div style="max-height: 500px; overflow-y:auto; background:#f8fafc; padding:10px; border-radius:8px;">
+                        <form method="POST" id="update_dept_form">
+                            <?php foreach($depts as $index => $d): ?>
+                                <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 5px; border-bottom:1px solid #edf2f7; gap:5px;">
+                                    <div style="display:flex; flex-direction:column; gap:2px;">
+                                        <input type="number" name="display_order[<?= $d['id'] ?>]" value="<?= $d['display_order'] ?>" style="width:45px; font-size:11px; padding:4px; text-align:center;" class="t-input" title="並び順（数字が小さい順）">
+                                    </div>
+                                    <input type="text" value="<?= htmlspecialchars($d['name']) ?>" class="t-input" style="flex:1; padding:6px; font-size:13px; font-weight:700;" onchange="document.getElementById('u_id').value='<?= $d['id'] ?>'; document.getElementById('u_name').value=this.value;">
+                                    <button type="button" onclick="if(confirm('削除しますか？')){ document.getElementById('del_dept_<?= $d['id'] ?>').submit(); }" style="background:none; border:none; color:#e53e3e; cursor:pointer; font-size:11px; padding:5px;">削除</button>
+                                </div>
+                            <?php endforeach; ?>
+                            <input type="hidden" name="update_id" id="u_id">
+                            <input type="hidden" name="update_name" id="u_name">
+                            <?php if(!empty($depts)): ?>
+                            <div style="margin-top:15px; display:flex; gap:10px;">
+                                <button type="submit" name="update_dept_order" class="btn-hr" style="flex:1; padding:8px; font-size:12px; background:#4a5568;">並び順を保存</button>
+                                <button type="submit" name="update_dept" class="btn-hr" style="flex:1; padding:8px; font-size:12px;" onclick="if(!document.getElementById('u_id').value){ alert('部署名を編集してからボタンを押してください。'); return false; }">名前を更新</button>
                             </div>
+                            <?php endif; ?>
+                        </form>
+                        
+                        <?php foreach($depts as $d): ?>
+                            <form method="POST" id="del_dept_<?= $d['id'] ?>" style="display:none;"><input type="hidden" name="dept_id" value="<?= $d['id'] ?>"><input type="hidden" name="delete_dept" value="1"></form>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -138,10 +223,23 @@ $staff_members = $stmt->fetchAll();
                                     <div id="e-<?= $s['id'] ?>" class="edit-panel" style="text-align:left;">
                                         <form method="POST">
                                             <input type="hidden" name="staff_id" value="<?= $s['id'] ?>">
+                                            
+                                            <h6 style="margin:0 0 10px 0; font-size:11px; color:#4a5568; text-transform:uppercase; letter-spacing:0.05em; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">基本情報</h6>
+                                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
+                                                <div><label style="font-size:11px; font-weight:700;">氏名</label><input type="text" name="name" class="t-input" value="<?= htmlspecialchars($s['name']) ?>" required></div>
+                                                <div><label style="font-size:11px; font-weight:700;">ログインID</label><input type="text" name="login_id" class="t-input" value="<?= htmlspecialchars($s['login_id']) ?>" required></div>
+                                            </div>
+                                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
+                                                <div><label style="font-size:11px; font-weight:700;">メールアドレス</label><input type="email" name="email" class="t-input" value="<?= htmlspecialchars($s['email']) ?>" required></div>
+                                                <div><label style="font-size:11px; font-weight:700;">入社日</label><input type="date" name="hire_date" class="t-input" value="<?= htmlspecialchars($s['hire_date'] ?? '') ?>"></div>
+                                            </div>
+
+                                            <h6 style="margin:15px 0 10px 0; font-size:11px; color:#4a5568; text-transform:uppercase; letter-spacing:0.05em; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">所属・権限</h6>
                                             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
                                                 <div><label style="font-size:11px; font-weight:700;">所属部署</label><select name="department_id" class="t-input"><?php foreach($depts as $d): ?><option value="<?= $d['id'] ?>" <?= $s['department_id']==$d['id']?'selected':'' ?>><?= htmlspecialchars($d['name']) ?></option><?php endforeach; ?><option value="">なし</option></select></div>
-                                                <div><label style="font-size:11px; font-weight:700;">管理者権限</label><label style="display:block; padding:10px; background:#f7fafc; border:1px dashed #cbd5e0; border-radius:8px; cursor:pointer; font-size:12px; margin-top:5px;"><input type="checkbox" name="is_attendance_admin" value="1" <?= $s['is_attendance_admin']?'checked':'' ?>> 勤怠管理の操作権限</label></div>
+                                                <div><label style="font-size:11px; font-weight:700;">管理者権限</label><label style="display:block; padding:8px; background:#f7fafc; border:1px dashed #cbd5e0; border-radius:8px; cursor:pointer; font-size:12px; margin-top:5px;"><input type="checkbox" name="is_attendance_admin" value="1" <?= $s['is_attendance_admin']?'checked':'' ?>> 勤怠管理の操作権限</label></div>
                                             </div>
+                                            
                                             <div style="background:#f8fafc; padding:15px; border-radius:10px; margin-bottom:15px;">
                                                 <h6 style="margin:0 0 10px 0; font-size:11px; color:#4a5568; text-transform:uppercase; letter-spacing:0.05em;">労働条件設定</h6>
                                                 <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;">
@@ -151,13 +249,11 @@ $staff_members = $stmt->fetchAll();
                                                 </div>
                                             </div>
                                             <div style="display:flex; justify-content:space-between; gap:10px;">
-                                                <button type="submit" name="save_staff_details" class="btn-hr" style="flex:1;">変更を保存</button>
-                                                <form method="POST" onsubmit="return confirm('このスタッフを削除してもよろしいですか？')">
-                                                    <input type="hidden" name="staff_id" value="<?= $s['id'] ?>">
-                                                    <button type="submit" name="delete_staff" class="btn-hr" style="background:#e53e3e; width:80px;">削除</button>
-                                                </form>
+                                                <button type="submit" name="save_staff_details" class="btn-hr" style="flex:1;">すべての変更を保存</button>
+                                                <button type="button" onclick="if(confirm('このスタッフを削除してもよろしいですか？')){ document.getElementById('del_stf_<?= $s['id'] ?>').submit(); }" class="btn-hr" style="background:#e53e3e; width:80px;">削除</button>
                                             </div>
                                         </form>
+                                        <form method="POST" id="del_stf_<?= $s['id'] ?>" style="display:none;"><input type="hidden" name="staff_id" value="<?= $s['id'] ?>"><input type="hidden" name="delete_staff" value="1"></form>
                                     </div>
                                 </td>
                             </tr>
