@@ -4,6 +4,15 @@ require_once __DIR__ . '/auth.php';
 $message = ""; $error = "";
 $target_parent_id = $user_id; // HR管理は基本的にオーナーが管理
 
+// プラン上限設定
+$stmt = $db->prepare("SELECT plan_rank FROM users WHERE id = ?");
+$stmt->execute([$target_parent_id]);
+$parent_user = $stmt->fetch();
+$plan_rank = (int)($parent_user['plan_rank'] ?? 1);
+$max_staff = -1; // -1 is unlimited
+if ($plan_rank === 1) $max_staff = 5;
+elseif ($plan_rank === 2) $max_staff = 10;
+
 // スキーマの自動更新（マイグレーション）
 try {
     $db->exec("CREATE TABLE IF NOT EXISTS company_info (parent_id INT PRIMARY KEY, company_name VARCHAR(255) NOT NULL, postal_code VARCHAR(20), address VARCHAR(255), phone VARCHAR(50), representative_name VARCHAR(255), updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
@@ -93,18 +102,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_staff_details'])
 
 // スタッフ追加
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_staff'])) {
-    try {
-        $stmt = $db->prepare("INSERT INTO users (company_id, login_id, name, email, password, role, parent_id, hire_date, status, department_id, position_id) VALUES (?, ?, ?, ?, ?, 'staff', ?, ?, 1, ?, ?)");
-        $stmt->execute([$company_id, $_POST['login_id'], $_POST['name'], $_POST['email'], password_hash($_POST['password'], PASSWORD_DEFAULT), $target_parent_id, $_POST['hire_date'] ?: null, $_POST['department_id'] ?: null, $_POST['position_id'] ?: null]);
-        $message = "スタッフを追加しました。";
-    } catch(PDOException $e) {
-        if ($e->getCode() == 23000) {
-            $error = "登録エラー: 入力されたメールアドレス（またはログインID）は既に他のスタッフによって使用されています。別のものを指定してください。";
-        } else {
+    $stmt = $db->prepare("SELECT COUNT(id) FROM users WHERE parent_id = ? AND role = 'staff'");
+    $stmt->execute([$target_parent_id]);
+    $current_staff_count = $stmt->fetchColumn();
+
+    if ($max_staff !== -1 && $current_staff_count >= $max_staff) {
+        $error = "登録エラー: 現在のプラン（上限{$max_staff}名）ではこれ以上スタッフを登録できません。";
+    } else {
+        try {
+            $stmt = $db->prepare("INSERT INTO users (company_id, login_id, name, email, password, role, parent_id, hire_date, status, department_id, position_id) VALUES (?, ?, ?, ?, ?, 'staff', ?, ?, 1, ?, ?)");
+            $stmt->execute([$company_id, $_POST['login_id'], $_POST['name'], $_POST['email'], password_hash($_POST['password'], PASSWORD_DEFAULT), $target_parent_id, $_POST['hire_date'] ?: null, $_POST['department_id'] ?: null, $_POST['position_id'] ?: null]);
+            $message = "スタッフを追加しました。";
+        } catch(PDOException $e) {
+            if ($e->getCode() == 23000) {
+                $error = "登録エラー: 入力されたメールアドレス（またはログインID）は既に他のスタッフによって使用されています。別のものを指定してください。";
+            } else {
+                $error = "登録エラー: " . $e->getMessage();
+            }
+        } catch(Exception $e) {
             $error = "登録エラー: " . $e->getMessage();
         }
-    } catch(Exception $e) {
-        $error = "登録エラー: " . $e->getMessage();
     }
 }
 
@@ -129,6 +146,9 @@ $positions = $stmt->fetchAll();
 $stmt = $db->prepare("SELECT u.*, d.name as dept_name, p.name as pos_name, p.rank_level FROM users u LEFT JOIN hr_departments d ON u.department_id = d.id LEFT JOIN hr_positions p ON u.position_id = p.id WHERE u.parent_id = ? AND u.role = 'staff' ORDER BY p.rank_level DESC, u.id DESC");
 $stmt->execute([$target_parent_id]);
 $staff_members = $stmt->fetchAll();
+
+$current_staff_count = count($staff_members);
+$is_limit_reached = ($max_staff !== -1 && $current_staff_count >= $max_staff);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -368,24 +388,38 @@ $staff_members = $stmt->fetchAll();
                 </div>
 
                 <div class="card" style="border-top: 4px solid var(--hr-primary);">
-                    <h4 style="margin:0 0 20px 0;">✨ 新規スタッフの採用登録</h4>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                        <h4 style="margin:0;">✨ 新規スタッフの採用登録</h4>
+                        <div style="font-size:12px; font-weight:700; color:<?= $is_limit_reached ? '#e53e3e' : '#4a5568' ?>; background:<?= $is_limit_reached ? '#fff5f5' : '#f7fafc' ?>; padding:4px 10px; border-radius:15px; border:1px solid <?= $is_limit_reached ? '#feb2b2' : '#e2e8f0' ?>;">
+                            登録数: <?= $current_staff_count ?> / <?= $max_staff === -1 ? '無制限' : $max_staff.'名' ?>
+                        </div>
+                    </div>
+                    
+                    <?php if($is_limit_reached): ?>
+                    <div style="background:#fff5f5; border:1px solid #fc8181; padding:15px; border-radius:8px; margin-bottom:20px; color:#c53030; font-size:13px; font-weight:700;">
+                        ※現在のプラン（上限<?= $max_staff ?>名）に達しているため、これ以上スタッフを登録できません。プランのアップグレードをご検討ください。
+                    </div>
+                    <?php endif; ?>
+
                     <form method="POST">
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
-                            <div><label style="font-size:11px;">氏名</label><input type="text" name="name" class="t-input" placeholder="山田 太郎" required></div>
-                            <div><label style="font-size:11px;">入社日</label><input type="date" name="hire_date" class="t-input" value="<?= date('Y-m-d') ?>"></div>
-                        </div>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
-                            <div><label style="font-size:11px;">ログインID</label><input type="text" name="login_id" class="t-input" placeholder="yamada_t" required></div>
-                            <div><label style="font-size:11px;">初期パスワード</label><input type="password" name="password" class="t-input" value="password123" required></div>
-                        </div>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px; margin-bottom:15px;">
-                            <div><label style="font-size:11px;">メールアドレス</label><input type="email" name="email" class="t-input" placeholder="yamada@example.com" required></div>
-                            <div><label style="font-size:11px;">所属部署</label><select name="department_id" class="t-input"><option value="">直轄（部署なし）</option><?php foreach($depts as $d): ?><option value="<?= $d['id'] ?>"><?= htmlspecialchars($d['name']) ?></option><?php endforeach; ?></select></div>
-                            <div><label style="font-size:11px;">役職</label><select name="position_id" class="t-input"><option value="">一般スタッフ</option><?php foreach($positions as $p): ?><option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['name']) ?></option><?php endforeach; ?></select></div>
-                        </div>
-                        <div style="text-align:right;">
-                            <button type="submit" name="add_staff" class="btn-hr" style="padding:12px 30px;">スタッフを登録する</button>
-                        </div>
+                        <fieldset <?= $is_limit_reached ? 'disabled' : '' ?> style="border:none; padding:0; margin:0;">
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
+                                <div><label style="font-size:11px;">氏名</label><input type="text" name="name" class="t-input" placeholder="山田 太郎" required></div>
+                                <div><label style="font-size:11px;">入社日</label><input type="date" name="hire_date" class="t-input" value="<?= date('Y-m-d') ?>"></div>
+                            </div>
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
+                                <div><label style="font-size:11px;">ログインID</label><input type="text" name="login_id" class="t-input" placeholder="yamada_t" required></div>
+                                <div><label style="font-size:11px;">初期パスワード</label><input type="password" name="password" class="t-input" value="password123" required></div>
+                            </div>
+                            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px; margin-bottom:15px;">
+                                <div><label style="font-size:11px;">メールアドレス</label><input type="email" name="email" class="t-input" placeholder="yamada@example.com" required></div>
+                                <div><label style="font-size:11px;">所属部署</label><select name="department_id" class="t-input"><option value="">直轄（部署なし）</option><?php foreach($depts as $d): ?><option value="<?= $d['id'] ?>"><?= htmlspecialchars($d['name']) ?></option><?php endforeach; ?></select></div>
+                                <div><label style="font-size:11px;">役職</label><select name="position_id" class="t-input"><option value="">一般スタッフ</option><?php foreach($positions as $p): ?><option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['name']) ?></option><?php endforeach; ?></select></div>
+                            </div>
+                            <div style="text-align:right;">
+                                <button type="submit" name="add_staff" class="btn-hr" style="padding:12px 30px; <?= $is_limit_reached ? 'opacity:0.5; cursor:not-allowed;' : '' ?>">スタッフを登録する</button>
+                            </div>
+                        </fieldset>
                     </form>
                 </div>
             </div>
