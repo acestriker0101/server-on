@@ -55,7 +55,7 @@ foreach ($workflows as $w) {
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>承認ルート設定 | SERVER-ON 人事管理</title>
+    <title>承認ルート設定 | SERVER-ON 人事・組織管理</title>
     <link rel="stylesheet" href="/assets/attendance.css?v=<?= time() ?>">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -74,10 +74,10 @@ foreach ($workflows as $w) {
 </head>
 <body>
     <nav>
-        <div class="logo-hr">SERVER-ON <span style="font-weight:400; font-size:14px; color:#a0aec0;">人事管理 - 承認フロー設定</span></div>
+        <div class="logo-hr">SERVER-ON <span style="font-weight:400; font-size:14px; color:#a0aec0;">人事・組織管理 - 承認ルート設定</span></div>
         <div class="nav-links">
-            <a href="/hr_mgmt" style="color:#718096; text-decoration:none; margin-right:15px; font-size:13px;">人事管理トップ</a>
-            <a href="/portal/" style="color:#718096; text-decoration:none; font-size:13px;">ポータル</a>
+            <a href="/hr_mgmt" style="color:#718096; text-decoration:none; margin-right:15px; font-size:13px;">人事・組織管理に戻る</a>
+            <a href="/portal/" style="color:#718096; text-decoration:none; font-size:13px;">ポータルに戻る</a>
         </div>
     </nav>
 

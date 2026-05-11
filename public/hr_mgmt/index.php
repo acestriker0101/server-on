@@ -8,6 +8,9 @@ $target_parent_id = $user_id; // HR管理は基本的にオーナーが管理
 try {
     $db->exec("CREATE TABLE IF NOT EXISTS company_info (parent_id INT PRIMARY KEY, company_name VARCHAR(255) NOT NULL, postal_code VARCHAR(20), address VARCHAR(255), phone VARCHAR(50), representative_name VARCHAR(255), updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
     
+    $cols3 = $db->query("SHOW COLUMNS FROM company_info LIKE 'invoice_number'")->fetchAll();
+    if(empty($cols3)) $db->exec("ALTER TABLE company_info ADD COLUMN invoice_number VARCHAR(50) DEFAULT NULL AFTER representative_name");
+
     // IF NOT EXISTS は一部環境で構文エラーになる場合があるため、無難なカラム追加の仕組みにする
     $cols = $db->query("SHOW COLUMNS FROM hr_departments LIKE 'display_order'")->fetchAll();
     if(empty($cols)) $db->exec("ALTER TABLE hr_departments ADD COLUMN display_order INT DEFAULT 0 AFTER name");
@@ -21,8 +24,8 @@ try {
 
 // --- 会社情報管理 ---
 if (isset($_POST['save_company_info'])) {
-    $stmt = $db->prepare("INSERT INTO company_info (parent_id, company_name, postal_code, address, phone, representative_name) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE company_name=VALUES(company_name), postal_code=VALUES(postal_code), address=VALUES(address), phone=VALUES(phone), representative_name=VALUES(representative_name)");
-    $stmt->execute([$target_parent_id, $_POST['company_name'], $_POST['postal_code'], $_POST['address'], $_POST['phone'], $_POST['representative_name']]);
+    $stmt = $db->prepare("INSERT INTO company_info (parent_id, company_name, postal_code, address, phone, representative_name, invoice_number) VALUES (?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE company_name=VALUES(company_name), postal_code=VALUES(postal_code), address=VALUES(address), phone=VALUES(phone), representative_name=VALUES(representative_name), invoice_number=VALUES(invoice_number)");
+    $stmt->execute([$target_parent_id, $_POST['company_name'], $_POST['postal_code'], $_POST['address'], $_POST['phone'], $_POST['representative_name'], $_POST['invoice_number']]);
     $message = "会社情報を保存しました。";
 }
 
@@ -184,6 +187,7 @@ $staff_members = $stmt->fetchAll();
                     </div>
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
                         <div><label style="font-size:11px; font-weight:700;">電話番号</label><input type="text" name="phone" class="t-input" value="<?= htmlspecialchars($comp['phone'] ?? '') ?>" placeholder="03-0000-0000"></div>
+                        <div><label style="font-size:11px; font-weight:700;">適格請求書発行事業者登録番号（インボイス番号）</label><input type="text" name="invoice_number" class="t-input" value="<?= htmlspecialchars($comp['invoice_number'] ?? '') ?>" placeholder="T1234567890123"></div>
                     </div>
                     <div style="text-align:right;">
                         <button type="submit" name="save_company_info" class="btn-hr">保存する</button>
@@ -192,10 +196,11 @@ $staff_members = $stmt->fetchAll();
             </div>
             
             <?php if($comp): ?>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size:14px;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px; font-size:14px;">
                 <div><span style="color:#718096; font-size:11px; display:block;">会社・組織名</span><strong style="font-size:16px;"><?= htmlspecialchars($comp['company_name']) ?></strong></div>
                 <div><span style="color:#718096; font-size:11px; display:block;">代表者</span><strong><?= htmlspecialchars($comp['representative_name']) ?></strong></div>
-                <div><span style="color:#718096; font-size:11px; display:block;">所在地</span>〒<?= htmlspecialchars($comp['postal_code']) ?><br><?= htmlspecialchars($comp['address']) ?></div>
+                <div><span style="color:#718096; font-size:11px; display:block;">適格請求書登録番号</span><?= htmlspecialchars($comp['invoice_number'] ?: '未登録') ?></div>
+                <div style="grid-column: span 2;"><span style="color:#718096; font-size:11px; display:block;">所在地</span>〒<?= htmlspecialchars($comp['postal_code']) ?> <?= htmlspecialchars($comp['address']) ?></div>
                 <div><span style="color:#718096; font-size:11px; display:block;">電話番号</span><?= htmlspecialchars($comp['phone']) ?></div>
             </div>
             <?php else: ?>
@@ -295,7 +300,7 @@ $staff_members = $stmt->fetchAll();
                                     </div>
                                 </td>
                                 <td>
-                                    <div style="font-weight:700; color:var(--hr-primary);"><?= htmlspecialchars($s['dept_name'] ?: '未所属') ?></div>
+                                    <div style="font-weight:700; color:var(--hr-primary);"><?= htmlspecialchars($s['dept_name'] ?: '未所属・直轄') ?></div>
                                     <?php if($s['pos_name']): ?>
                                     <div style="margin-top:3px;"><span class="badge badge-pos"><?= htmlspecialchars($s['pos_name']) ?></span></div>
                                     <?php else: ?>
@@ -323,7 +328,7 @@ $staff_members = $stmt->fetchAll();
                                                 <div>
                                                     <label style="font-size:11px; font-weight:700;">所属部署</label>
                                                     <select name="department_id" class="t-input">
-                                                        <option value="">なし</option>
+                                                        <option value="">直轄（部署なし）</option>
                                                         <?php foreach($depts as $d): ?><option value="<?= $d['id'] ?>" <?= $s['department_id']==$d['id']?'selected':'' ?>><?= htmlspecialchars($d['name']) ?></option><?php endforeach; ?>
                                                     </select>
                                                 </div>
@@ -375,7 +380,7 @@ $staff_members = $stmt->fetchAll();
                         </div>
                         <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px; margin-bottom:15px;">
                             <div><label style="font-size:11px;">メールアドレス</label><input type="email" name="email" class="t-input" placeholder="yamada@example.com" required></div>
-                            <div><label style="font-size:11px;">所属部署</label><select name="department_id" class="t-input"><option value="">部署選択</option><?php foreach($depts as $d): ?><option value="<?= $d['id'] ?>"><?= htmlspecialchars($d['name']) ?></option><?php endforeach; ?></select></div>
+                            <div><label style="font-size:11px;">所属部署</label><select name="department_id" class="t-input"><option value="">直轄（部署なし）</option><?php foreach($depts as $d): ?><option value="<?= $d['id'] ?>"><?= htmlspecialchars($d['name']) ?></option><?php endforeach; ?></select></div>
                             <div><label style="font-size:11px;">役職</label><select name="position_id" class="t-input"><option value="">一般スタッフ</option><?php foreach($positions as $p): ?><option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['name']) ?></option><?php endforeach; ?></select></div>
                         </div>
                         <div style="text-align:right;">
@@ -389,13 +394,39 @@ $staff_members = $stmt->fetchAll();
         <h2 class="section-title" style="margin-top:60px;">📊 組織図 (Company Map)</h2>
         <div class="card" style="background:#fff; padding:30px;">
             <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center;">
-                <div style="text-align:center; min-width:200px; padding:20px; border:2px solid var(--hr-primary); border-radius:12px; background:#f5f3ff;">
-                    <div style="font-size:12px; color:var(--hr-primary); font-weight:800;">TOP / 代表者</div>
-                    <?php $top_name = !empty($comp['representative_name']) ? $comp['representative_name'] : $_SESSION['name']; ?>
-                    <div style="font-size:20px; font-weight:900; margin-top:5px;"><?= htmlspecialchars($top_name) ?></div>
+                <!-- トップ・代表者と直轄スタッフ -->
+                <div style="text-align:center; min-width:300px; border:2px solid var(--hr-primary); border-radius:12px; background:#fff; overflow:hidden; box-shadow:0 4px 6px rgba(0,0,0,0.05);">
+                    <div style="background:#f5f3ff; padding:20px; border-bottom:1px solid #e2e8f0;">
+                        <div style="font-size:12px; color:var(--hr-primary); font-weight:800;">TOP / 代表者</div>
+                        <?php $top_name = !empty($comp['representative_name']) ? $comp['representative_name'] : $_SESSION['name']; ?>
+                        <div style="font-size:20px; font-weight:900; margin-top:5px;"><?= htmlspecialchars($top_name) ?></div>
+                    </div>
+                    <?php 
+                    // 未所属スタッフを直轄として代表者の下に表示
+                    $no_dept_staff = array_filter($staff_members, function($s) { return !$s['department_id']; });
+                    if(!empty($no_dept_staff)): ?>
+                    <div style="background:#fff; padding:15px;">
+                        <div style="font-size:11px; font-weight:800; color:#718096; margin-bottom:10px; text-align:left; border-bottom:1px solid #edf2f7; padding-bottom:5px;">直轄・未所属スタッフ</div>
+                        <?php foreach($no_dept_staff as $ns): ?>
+                            <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px; text-align:left;">
+                                <div style="width:28px; height:28px; background:#edf2f7; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#4a5568;"><?= mb_substr($ns['name'],0,1) ?></div>
+                                <div style="flex:1;">
+                                    <div style="font-size:13px; font-weight:800;"><?= htmlspecialchars($ns['name']) ?></div>
+                                    <?php if($ns['pos_name']): ?>
+                                    <div style="font-size:10px; color:#805ad5; font-weight:700; margin-top:2px;">👑 <?= htmlspecialchars($ns['pos_name']) ?></div>
+                                    <?php else: ?>
+                                    <div style="font-size:10px; color:#a0aec0; margin-top:2px;">一般</div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
+            
             <div style="text-align:center; height:40px; border-left:2px solid #e2e8f0; width:1px; margin:0 auto;"></div>
+            
             <div style="display:flex; flex-wrap:wrap; gap:30px; justify-content:center; align-items:flex-start;">
                 <?php foreach($depts as $d): ?>
                 <div style="background:#fff; border:1px solid #e2e8f0; border-radius:12px; width:250px; overflow:hidden; box-shadow:0 4px 6px rgba(0,0,0,0.02);">
@@ -425,27 +456,6 @@ $staff_members = $stmt->fetchAll();
                     </div>
                 </div>
                 <?php endforeach; ?>
-                
-                <!-- 未所属 -->
-                <div style="background:#fff; border:1px dashed #cbd5e0; border-radius:12px; width:220px; overflow:hidden;">
-                    <div style="background:#edf2f7; color:#718096; padding:10px; font-size:14px; font-weight:800; text-align:center;">
-                        未所属スタッフ
-                    </div>
-                    <div style="padding:15px;">
-                         <?php 
-                        $no_dept_staff = array_filter($staff_members, function($s) { return !$s['department_id']; });
-                        if(empty($no_dept_staff)): ?>
-                            <div style="text-align:center; font-size:11px; color:#a0aec0; padding:10px;">なし</div>
-                        <?php else: ?>
-                            <?php foreach($no_dept_staff as $ns): ?>
-                                <div style="font-size:12px; color:#718096; margin-bottom:8px; padding-bottom:5px; border-bottom:1px solid #edf2f7;">
-                                    <div style="font-weight:700;">・<?= htmlspecialchars($ns['name']) ?></div>
-                                    <div style="font-size:10px; padding-left:12px;"><?= htmlspecialchars($ns['pos_name'] ?: '一般') ?></div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
