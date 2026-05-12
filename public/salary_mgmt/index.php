@@ -91,7 +91,7 @@ if ($is_admin_access) {
     <nav>
         <div class="logo-area">
             <span class="logo-main">SERVER-ON</span>
-            <span class="logo-sub" style="margin-left: 5px; color: #64748b;">給与・明細管理</span>
+            <span class="logo-sub">給与・明細管理</span>
         </div>
         <div class="nav-links">
             <a href="/portal/" class="portal-link">ポータルに戻る</a>
