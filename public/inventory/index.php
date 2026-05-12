@@ -186,7 +186,9 @@ $history = $stmt->fetchAll();
 </head>
 <body>
     <?php include __DIR__ . '/navbar.php'; ?>
-    <div class="container" style="display:flex; gap:20px; flex-wrap:wrap; padding-bottom:100px;">
+    <div class="container" style="display:flex; flex-direction: column; gap:20px; padding-bottom:100px;">
+        <h2 class="section-title">在庫管理</h2>
+        <div style="display:flex; gap:20px; flex-wrap:wrap;">
         <div id="input-panel" class="card sticky-panel" style="width:340px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                 <h4 style="margin:0;">一括入力</h4>
@@ -281,6 +283,7 @@ $history = $stmt->fetchAll();
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <form id="del-form" method="POST" style="display:none;">
         <input type="hidden" name="delete_id" id="del-id">

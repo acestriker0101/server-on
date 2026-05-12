@@ -84,6 +84,7 @@ if ($is_admin_access) {
     <div class="container">
         
         <?php if ($user_role === 'staff'): ?>
+            <h2 class="section-title">勤怠管理</h2>
             <div class="card">
                 <div class="clock-area">
                     <div id="current-date"><?= date('Y年m月d日 (D)') ?></div>
@@ -149,7 +150,7 @@ if ($is_admin_access) {
         <?php endif; ?>
 
         <?php if ($is_admin_access): ?>
-            <h2 class="section-title">管理者ダッシュボード</h2>
+            <h2 class="section-title">勤怠管理</h2>
             
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:30px;">
                 <div class="card" style="border-left: 4px solid #3182ce;">

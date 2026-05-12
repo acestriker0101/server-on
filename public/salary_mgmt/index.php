@@ -155,7 +155,7 @@ if ($is_admin_access) {
 
         <?php else: ?>
             <!-- 管理者用：マスタ・発行一覧 -->
-            <h2 class="section-title">給与マスタ・明細発行</h2>
+            <h2 class="section-title">給与・明細管理</h2>
             <div class="card">
                 <table class="slip-table" style="text-align:left;">
                     <thead><tr><th>氏名</th><th>基本給</th><th>控除・手当(合計)</th><th>操作</th></tr></thead>
