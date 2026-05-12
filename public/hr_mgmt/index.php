@@ -196,7 +196,7 @@ $is_limit_reached = ($max_staff !== -1 && $current_staff_count >= $max_staff);
         </div>
     </nav>
 
-    <div class="container" style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
         <h2 class="section-title">人事・組織管理</h2>
         
         <?php if($message): ?><div style="padding:15px; background:#f0fff4; color:#276749; border-radius:8px; margin-bottom:25px;"><?= $message ?></div><?php endif; ?>

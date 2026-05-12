@@ -169,7 +169,7 @@ if (!$is_super_admin && $user_role !== 'admin') {
             <a href="/portal/logout">ログアウト</a>
         </div>
     </nav>
-    <div class="container" style="max-width: 1200px; padding-top:40px;">
+    <div class="container">
         <h2 class="section-title">ポータル</h2>
         <div class="app-grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
             <?php foreach($apps as $key => $app): 
