@@ -147,7 +147,10 @@ if (!$is_super_admin && $user_role !== 'admin') {
 </head>
 <body>
     <nav>
-        <div class="logo">SERVER-ON</div>
+        <div class="logo-area">
+            <span class="logo-main">SERVER-ON</span>
+            <span class="logo-sub">ポータル</span>
+        </div>
         <div class="nav-right">
             <?php if(isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
                 <div class="approval-dropdown">

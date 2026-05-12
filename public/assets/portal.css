@@ -1,54 +1,31 @@
 /* --- 共通土台 --- */
-body { background-color: #f7fafc; margin: 0; font-family: sans-serif; }
+body { background-color: #f7fafc; margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
 .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
 
-/* --- ナビゲーション (在庫管理と統一) --- */
+/* --- ナビゲーション (統一) --- */
 nav {
     background: #2d3748; 
     color: white; 
     padding: 0 25px;
-    height: 50px; /* 64pxから50pxに修正 */
+    height: 50px;
     display: flex; 
     justify-content: space-between; 
     align-items: center;
-    margin-bottom: 30px; 
-    border-radius: 0; /* 角丸を解除して帯状に */
+    margin-bottom: 20px; 
     box-sizing: border-box;
-    position: relative; 
+    position: sticky; 
+    top: 0;
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.logo { 
-    font-size: 20px; 
-    font-weight: 800; 
-    color: white; 
-    letter-spacing: 0.5px;
-}
+.logo-area { display: flex; align-items: baseline; gap: 10px; }
+.logo-main { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; white-space: nowrap; line-height: 1; text-transform: uppercase; color: white; }
+.logo-sub { font-size: 14px; color: #cbd5e0; font-weight: 600; line-height: 1; }
 
-.nav-right { 
-    display: flex; 
-    gap: 15px; 
-    align-items: center; 
-    height: 100%; 
-}
-
-.nav-link, .nav-right a {
-    color: #edf2f7; 
-    text-decoration: none; 
-    font-size: 16px; /* 14pxから16pxに大きく */
-    font-weight: bold;
-    padding: 0 10px;
-    height: 100%;
-    display: flex; 
-    align-items: center;
-    transition: all 0.2s; 
-    line-height: 1;
-}
-
-.nav-link.active, .nav-right a:hover { 
-    color: #3182ce; /* 背景を塗らずに文字色を変えるスタイルに変更（inventory合わせ） */
-}
+.nav-right { display: flex; gap: 20px; align-items: center; height: 100%; }
+.nav-link, .nav-right a { color: white; text-decoration: none; font-size: 13px; font-weight: 600; transition: color 0.2s; line-height: 1; display: flex; align-items: center; padding: 0 5px; height: 100%; }
+.nav-link.active, .nav-right a:hover { color: #e2e8f0; }
 
 /* ハンバーガーボタン */
 .menu-toggle {
@@ -97,7 +74,7 @@ nav {
 }
 
 /* --- コンテンツエリア (既存維持) --- */
-.section-title { font-size: 22px; margin: 35px 0 25px 0; font-weight: bold; border-left: 5px solid #3182ce; padding-left: 15px; }
+.section-title { font-size: 24px; margin: 0 0 25px 0; font-weight: 800; color: #334155; }
 .app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
 .app-card { background: white; padding: 35px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; display: flex; flex-direction: column; }
 .btn-primary { background: #3182ce; color: white; border: none; display: inline-block; text-align: center; padding: 12px 24px; border-radius: 8px; font-weight: bold; text-decoration: none; }
