@@ -27,7 +27,7 @@ nav {
 
 .logo-area { display: flex; align-items: baseline; gap: 10px; }
 .logo-main { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; white-space: nowrap; line-height: 1; text-transform: uppercase; color: white; }
-.logo-sub { font-size: 14px; color: #a0aec0; font-weight: 400; line-height: 1; }
+.logo-sub { font-size: 14px; color: #cbd5e0; font-weight: 600; line-height: 1; }
 
 .nav-links { display: flex; gap: 20px; align-items: center; }
 .nav-links a { color: white; text-decoration: none; font-size: 13px; font-weight: 600; transition: color 0.2s; line-height: 1; }
