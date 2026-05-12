@@ -32,7 +32,7 @@ nav {
 .nav-links { display: flex; gap: 20px; align-items: center; }
 .nav-links a { color: white; text-decoration: none; font-size: 13px; font-weight: 600; transition: color 0.2s; line-height: 1; }
 .nav-links a:hover { color: #e2e8f0; }
-.nav-links a.portal-link { color: #a0aec0 !important; margin-left: 10px; }
+.nav-links a.portal-link { color: #cbd5e0 !important; margin-left: 10px; }
 .nav-links a.logout-link { color: #fca5a5 !important; }
 .nav-links a.logout-link:hover { color: #f87171 !important; }
 

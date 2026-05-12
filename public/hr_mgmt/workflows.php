@@ -61,6 +61,7 @@ foreach ($workflows as $w) {
     <style>
         :root { --hr-primary: #805ad5; --hr-primary-dark: #6b46c1; --hr-bg: #f9f7ff; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background: var(--hr-bg); }
+        .nav-links a.portal-link { color: #cbd5e0 !important; }
         .logo-hr { font-weight: 800; font-size: 20px; color: var(--hr-primary); }
         .section-title { font-size: 24px; color: var(--hr-primary); margin-bottom: 25px; font-weight: 800; display: flex; align-items: center; gap: 10px; border: none; padding: 0; }
         .card { background: white; border-radius: 16px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); margin-bottom: 30px; }

@@ -161,7 +161,7 @@ $history = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <title>入出庫 | SERVER-ON</title>
-    <link rel="stylesheet" href="/assets/inventory.css">
+    <link rel="stylesheet" href="/assets/inventory.css?v=<?= time() ?>">
     <style>
         .mode-in-bg { background-color: #f0f9ff !important; border-color: #0ea5e9 !important; }
         .mode-out-bg { background-color: #fffafb !important; border-color: #f43f5e !important; }

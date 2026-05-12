@@ -119,7 +119,7 @@ $sets = $s_list_stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <title>商品マスタ | SERVER-ON</title>
-    <link rel="stylesheet" href="/assets/inventory.css">
+    <link rel="stylesheet" href="/assets/inventory.css?v=<?= time() ?>">
 </head>
 <body>
     <?php include __DIR__ . '/navbar.php'; ?>

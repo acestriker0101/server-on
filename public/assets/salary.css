@@ -32,6 +32,6 @@ nav { background: #2d3748; color: white; padding: 0 25px; display: flex; justify
 .nav-links { display: flex; gap: 20px; align-items: center; }
 .nav-links a { color: white; text-decoration: none; font-size: 13px; font-weight: 600; transition: color 0.2s; line-height: 1; }
 .nav-links a:hover { color: #e2e8f0; }
-.nav-links a.portal-link { color: #a0aec0 !important; margin-left: 10px; }
+.nav-links a.portal-link { color: #cbd5e0 !important; margin-left: 10px; }
 
 @media print { nav { display:none; } .container { margin:0; padding:0; } .card { border:none; box-shadow:none; } }
