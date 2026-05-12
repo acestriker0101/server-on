@@ -132,6 +132,7 @@
                 <p style="font-size: 16px; line-height: 1.8; color: #4a5568; margin-bottom: 20px;">
                     組織図の作成から承認ルート（ワークフロー）の柔軟な設定まで。複雑な組織構造や承認プロセスを視覚的に管理し、社内の意思決定をスムーズにします。
                 </p>
+                <a href="/portal/hr-app" style="color: #805ad5; font-weight: bold; text-decoration: none; margin-right: 20px;">機能の詳細を見る →</a>
                 <a href="/portal/register" class="btn-primary" style="background:#805ad5; display: inline-block;">今すぐ試す</a>
             </div>
             <div class="app-visual" style="background:#faf5ff; color:#805ad5;">👥</div>
@@ -155,6 +156,7 @@
                 <p style="font-size: 16px; line-height: 1.8; color: #4a5568; margin-bottom: 20px;">
                     定期券代や日々の交通費、経費精算をデジタル化。承認フローと連携し、経理部門のチェック作業を大幅に削減します。
                 </p>
+                <a href="/portal/expense-app" style="color: #d53f8c; font-weight: bold; text-decoration: none; margin-right: 20px;">機能の詳細を見る →</a>
                 <a href="/portal/register" class="btn-primary" style="background:#d53f8c; display: inline-block;">今すぐ試す</a>
             </div>
             <div class="app-visual" style="background:#fff5f7; color:#d53f8c;">🚆</div>
@@ -167,6 +169,7 @@
                 <p style="font-size: 16px; line-height: 1.8; color: #4a5568; margin-bottom: 20px; text-align: left;">
                     勤怠や交通費のデータと連動して給与明細を自動発行。ペーパーレス化を実現し、従業員はいつでもスマホから明細を確認できます。
                 </p>
+                <a href="/portal/salary-app" style="color: #dd6b20; font-weight: bold; text-decoration: none; margin-right: 20px;">機能の詳細を見る →</a>
                 <a href="/portal/register" class="btn-primary" style="background:#dd6b20; display: inline-block;">今すぐ試す</a>
             </div>
         </div>
