@@ -90,7 +90,10 @@
 <body>
     <div class="container">
         <nav>
-            <div class="logo">SERVER-ON</div>
+            <div class="logo-area">
+                <span class="logo-main">SERVER-ON</span>
+                <span class="logo-sub">プラットフォーム</span>
+            </div>
             <div class="menu-toggle"><span></span><span></span><span></span></div>
             <div class="nav-right">
                 <a href="/portal/login">ログイン</a>
@@ -125,39 +128,72 @@
 
         <div class="app-showcase">
             <div class="app-content">
-                <h2 class="section-title" style="margin-top: 0;">在庫管理</h2>
+                <h2 class="section-title" style="margin-top: 0;">人事・組織管理</h2>
                 <p style="font-size: 16px; line-height: 1.8; color: #4a5568; margin-bottom: 20px;">
-                    入出庫、棚卸、自動分析。現場の声を反映したUIで、ITが苦手な方でも迷わず使いこなせます。
+                    組織図の作成から承認ルート（ワークフロー）の柔軟な設定まで。複雑な組織構造や承認プロセスを視覚的に管理し、社内の意思決定をスムーズにします。
                 </p>
-                <a href="/portal/inventory-app" style="color: #3182ce; font-weight: bold; text-decoration: none; margin-right: 20px;">機能の詳細を見る →</a>
-                <a href="/portal/register" class="btn-primary">今すぐ試す</a>
+                <a href="/portal/register" class="btn-primary" style="background:#805ad5; display: inline-block;">今すぐ試す</a>
             </div>
-            <div class="app-visual">📦</div>
+            <div class="app-visual" style="background:#faf5ff; color:#805ad5;">👥</div>
         </div>
 
         <div class="app-showcase">
-            <div class="app-visual" style="background:#e6fffa; color:#2c7a7b;">🛠️</div>
+            <div class="app-visual" style="background:#f0fff4; color:#38a169;">⏱️</div>
             <div class="app-content" style="text-align: right;">
-                <h2 class="section-title" style="margin-top: 0;">備品管理</h2>
+                <h2 class="section-title" style="margin-top: 0;">勤怠管理</h2>
                 <p style="font-size: 16px; line-height: 1.8; color: #4a5568; margin-bottom: 20px; text-align: left;">
+                    スマホでもPCでも簡単な1タップ打刻で時間を記録。有給申請やシフトと連携し、月末の煩雑な集計作業をなくします。
+                </p>
+                <a href="/portal/attendance-app" style="color: #38a169; font-weight: bold; text-decoration: none; margin-right: 20px;">機能の詳細を見る →</a>
+                <a href="/portal/register" class="btn-primary" style="background:#38a169; display: inline-block;">今すぐ試す</a>
+            </div>
+        </div>
+
+        <div class="app-showcase">
+            <div class="app-content">
+                <h2 class="section-title" style="margin-top: 0;">交通費・経理管理</h2>
+                <p style="font-size: 16px; line-height: 1.8; color: #4a5568; margin-bottom: 20px;">
+                    定期券代や日々の交通費、経費精算をデジタル化。承認フローと連携し、経理部門のチェック作業を大幅に削減します。
+                </p>
+                <a href="/portal/register" class="btn-primary" style="background:#d53f8c; display: inline-block;">今すぐ試す</a>
+            </div>
+            <div class="app-visual" style="background:#fff5f7; color:#d53f8c;">🚆</div>
+        </div>
+
+        <div class="app-showcase">
+            <div class="app-visual" style="background:#fffaf0; color:#dd6b20;">📄</div>
+            <div class="app-content" style="text-align: right;">
+                <h2 class="section-title" style="margin-top: 0;">給与・明細管理</h2>
+                <p style="font-size: 16px; line-height: 1.8; color: #4a5568; margin-bottom: 20px; text-align: left;">
+                    勤怠や交通費のデータと連動して給与明細を自動発行。ペーパーレス化を実現し、従業員はいつでもスマホから明細を確認できます。
+                </p>
+                <a href="/portal/register" class="btn-primary" style="background:#dd6b20; display: inline-block;">今すぐ試す</a>
+            </div>
+        </div>
+
+        <div class="app-showcase">
+            <div class="app-content">
+                <h2 class="section-title" style="margin-top: 0;">備品管理</h2>
+                <p style="font-size: 16px; line-height: 1.8; color: #4a5568; margin-bottom: 20px;">
                     社内のあらゆる備品の購入履歴、修理状況、設置場所をひと目で把握。もう備品の所在をシステム外で探す必要はありません。
                 </p>
                 <a href="/portal/equipment-app" style="color: #2c7a7b; font-weight: bold; text-decoration: none; margin-right: 20px;">機能の詳細を見る →</a>
-                 <a href="/portal/register" class="btn-primary" style="background:#2c7a7b; display: inline-block;">今すぐ試す</a>
-             </div>
-         </div>
- 
-         <div class="app-showcase">
-             <div class="app-content">
-                 <h2 class="section-title" style="margin-top: 0;">勤怠管理</h2>
-                 <p style="font-size: 16px; line-height: 1.8; color: #4a5568; margin-bottom: 20px;">
-                     スマホでもPCでも簡単な1タップ打刻で時間を記録。有給申請やシフトと連携し、月末の煩雑な集計作業をなくします。
-                 </p>
-                 <a href="/portal/attendance-app" style="color: #38a169; font-weight: bold; text-decoration: none; margin-right: 20px;">機能の詳細を見る →</a>
-                 <a href="/portal/register" class="btn-primary" style="background:#38a169; display: inline-block;">今すぐ試す</a>
-             </div>
-             <div class="app-visual" style="background:#f0fff4; color:#38a169;">⏱️</div>
-         </div>
+                <a href="/portal/register" class="btn-primary" style="background:#2c7a7b; display: inline-block;">今すぐ試す</a>
+            </div>
+            <div class="app-visual" style="background:#e6fffa; color:#2c7a7b;">🛠️</div>
+        </div>
+
+        <div class="app-showcase">
+            <div class="app-visual" style="background:#ebf8ff; color:#3182ce;">📦</div>
+            <div class="app-content" style="text-align: right;">
+                <h2 class="section-title" style="margin-top: 0;">在庫管理</h2>
+                <p style="font-size: 16px; line-height: 1.8; color: #4a5568; margin-bottom: 20px; text-align: left;">
+                    入出庫、棚卸、自動分析。現場の声を反映したUIで、ITが苦手な方でも迷わず使いこなせます。
+                </p>
+                <a href="/portal/inventory-app" style="color: #3182ce; font-weight: bold; text-decoration: none; margin-right: 20px;">機能の詳細を見る →</a>
+                <a href="/portal/register" class="btn-primary" style="background:#3182ce; display: inline-block;">今すぐ試す</a>
+            </div>
+        </div>
 
         <section class="news-section">
             <h2 class="section-title">お知らせ</h2>
