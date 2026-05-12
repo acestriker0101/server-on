@@ -59,6 +59,8 @@ nav {
 .menu-toggle.active span:nth-child(2) { opacity: 0; }
 .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg); }
 
+.section-title { font-size: 24px; color: #2b6cb0; margin-bottom: 25px; font-weight: 800; display: flex; align-items: center; gap: 10px; border: none; padding: 0; }
+
 /* --- カード・パネル --- */
 .card {
     background: white;
