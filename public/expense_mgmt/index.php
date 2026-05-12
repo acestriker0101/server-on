@@ -105,7 +105,7 @@ if ($is_admin_access) {
         </div>
     </nav>
     <div class="container">
-        <h2 class="section-title">経費・交通費管理ダッシュボード</h2>
+        <h2 class="section-title">交通費・経理管理ダッシュボード</h2>
 
         <div class="expense-stat-grid">
             <div class="stat-box">

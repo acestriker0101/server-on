@@ -25,14 +25,14 @@ nav {
     margin-bottom: 20px;
 }
 
-.logo-area { display: flex; align-items: center; gap: 12px; }
-.logo-main { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; white-space: nowrap; line-height: 1; text-transform: uppercase; }
-.logo-sub { font-size: 15px; color: #4fd1c5; font-weight: bold; line-height: 1; margin-top: 2px; } /* Teal accent for equipment */
+.logo-area { display: flex; align-items: baseline; gap: 10px; }
+.logo-main { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; white-space: nowrap; line-height: 1; text-transform: uppercase; color: white; }
+.logo-sub { font-size: 14px; color: #a0aec0; font-weight: 400; line-height: 1; }
 
-.nav-links { display: flex; gap: 25px; align-items: center; }
-.nav-links a { color: white; text-decoration: none; font-size: 14px; font-weight: bold; transition: color 0.2s; line-height: 1; }
-.nav-links a:hover { color: #cbd5e0; }
-.nav-links a.portal-link { color: #a0aec0 !important; font-size: 14px; margin-left: 10px; }
+.nav-links { display: flex; gap: 20px; align-items: center; }
+.nav-links a { color: white; text-decoration: none; font-size: 13px; font-weight: 600; transition: color 0.2s; line-height: 1; }
+.nav-links a:hover { color: #e2e8f0; }
+.nav-links a.portal-link { color: #a0aec0 !important; margin-left: 10px; }
 .nav-links a.logout-link { color: #fca5a5 !important; }
 .nav-links a.logout-link:hover { color: #f87171 !important; }
 
@@ -56,7 +56,7 @@ nav {
 
 .pro-card { border-top: 4px solid #319795; } /* Teal top border for highlighting */
 
-.section-title { font-size: 18px; color: #334155; margin-top: 0; margin-bottom: 20px; font-weight: bold; }
+.section-title { font-size: 24px; color: #319795; margin-bottom: 25px; font-weight: 800; display: flex; align-items: center; gap: 10px; border: none; padding: 0; }
 
 /* --- 入力・汎用ボタン --- */
 .input-group label { display: block; font-size: 12px; color: #64748b; margin-bottom: 6px; font-weight: bold; }

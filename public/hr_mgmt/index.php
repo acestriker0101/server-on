@@ -172,7 +172,7 @@ $is_limit_reached = ($max_staff !== -1 && $current_staff_count >= $max_staff);
         :root { --hr-primary: #805ad5; --hr-primary-dark: #6b46c1; --hr-bg: #f9f7ff; }
         body { font-family: 'Outfit', 'Noto Sans JP', sans-serif; background: var(--hr-bg); }
         .logo-hr { font-weight: 800; font-size: 20px; color: var(--hr-primary); }
-        .section-title { font-weight: 800; color: #2d3748; margin-bottom: 25px; border-left: 5px solid var(--hr-primary); padding-left: 15px; }
+        .section-title { font-size: 24px; color: var(--hr-primary); margin-bottom: 25px; font-weight: 800; display: flex; align-items: center; gap: 10px; border: none; padding: 0; }
         .badge { padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
         .badge-admin { background: #fee2e2; color: #ef4444; }
         .badge-pos { background: #e9d8fd; color: #553c9a; border: 1px solid #d6bcfa; }
@@ -187,7 +187,7 @@ $is_limit_reached = ($max_staff !== -1 && $current_staff_count >= $max_staff);
     <nav>
         <div class="logo-area">
             <span class="logo-main">SERVER-ON</span>
-            <span class="logo-sub" style="margin-left: 5px; color: #a0aec0;">人事・組織管理</span>
+            <span class="logo-sub">人事・組織管理</span>
         </div>
         <div class="nav-links">
             <a href="/hr_mgmt/workflows">承認ルート設定</a>

@@ -13,6 +13,7 @@ body { font-family: 'Outfit', 'Inter', sans-serif; background: var(--bg-main); c
 .card { background: white; border-radius: 12px; padding: 25px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 25px; }
 
 .slip-view { background: white; border: 2px solid #e2e8f0; padding: 40px; border-radius: 8px; position:relative; }
+.section-title { font-size: 24px; font-weight: 800; color: var(--primary-dark); margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
 .slip-header { border-bottom: 2px solid var(--primary); padding-bottom: 15px; margin-bottom: 20px; display:flex; justify-content:space-between; align-items:flex-end; }
 .slip-title { font-size: 24px; font-weight: 800; color: var(--primary-dark); }
 
@@ -24,12 +25,13 @@ body { font-family: 'Outfit', 'Inter', sans-serif; background: var(--bg-main); c
 .btn-ui { display: inline-flex; align-items:center; justify-content:center; padding: 10px 20px; border-radius: 6px; font-weight: 700; font-size: 13px; text-decoration: none; cursor: pointer; transition: 0.2s; border: none; background: var(--primary); color: white; }
 .btn-ui:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
-nav { background: #2d3748; color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-.logo-area { display: flex; align-items: baseline; }
-.logo-main { font-weight: 900; font-size: 20px; letter-spacing: 1px; color: var(--primary); }
-.logo-sub { font-weight: 700; font-size: 13px; color: #cbd5e1; margin-left: 8px; }
-.nav-links a { color: white; text-decoration: none; margin-left: 20px; font-size: 14px; font-weight: 600; transition: color 0.2s; }
-.nav-links a:hover { color: var(--primary); }
-.portal-link { color: white !important; font-weight: 800 !important; }
+nav { background: #2d3748; color: white; padding: 0 25px; display: flex; justify-content: space-between; align-items: center; height: 50px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); box-sizing: border-box; margin-bottom: 20px; position: sticky; top: 0; z-index: 1000; }
+.logo-area { display: flex; align-items: baseline; gap: 10px; }
+.logo-main { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; white-space: nowrap; line-height: 1; text-transform: uppercase; color: white; }
+.logo-sub { font-size: 14px; color: #a0aec0; font-weight: 400; line-height: 1; }
+.nav-links { display: flex; gap: 20px; align-items: center; }
+.nav-links a { color: white; text-decoration: none; font-size: 13px; font-weight: 600; transition: color 0.2s; line-height: 1; }
+.nav-links a:hover { color: #e2e8f0; }
+.nav-links a.portal-link { color: #a0aec0 !important; margin-left: 10px; }
 
 @media print { nav { display:none; } .container { margin:0; padding:0; } .card { border:none; box-shadow:none; } }

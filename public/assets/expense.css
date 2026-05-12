@@ -11,7 +11,7 @@
 body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-main); color: var(--text-main); margin:0; }
 .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
 .card { background: var(--card-bg); border-radius: 12px; padding: 25px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(125, 211, 252, 0.1); margin-bottom: 30px; }
-.section-title { font-size: 24px; font-weight: 800; color: #701a75; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+.section-title { font-size: 24px; font-weight: 800; color: var(--primary-dark); margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
 
 .t-input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; margin-top: 5px; box-sizing: border-box; }
 .t-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(217, 70, 239, 0.1); }
@@ -34,12 +34,13 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-main); 
 .status-approved { background: #dcfce7; color: #166534; }
 .status-rejected { background: #fee2e2; color: #991b1b; }
 
-nav { background: #2d3748; color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-.logo-area { display: flex; align-items: baseline; }
-.logo-main { font-weight: 900; font-size: 20px; letter-spacing: 1px; color: var(--primary); }
-.logo-sub { font-weight: 700; font-size: 13px; color: #cbd5e1; margin-left: 8px; }
-.nav-links a { color: white; text-decoration: none; margin-left: 20px; font-size: 14px; font-weight: 600; transition: color 0.2s; }
-.nav-links a:hover { color: var(--primary); }
-.portal-link { color: white !important; font-weight: 800 !important; }
+nav { background: #2d3748; color: white; padding: 0 25px; display: flex; justify-content: space-between; align-items: center; height: 50px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); box-sizing: border-box; margin-bottom: 20px; position: sticky; top: 0; z-index: 1000; }
+.logo-area { display: flex; align-items: baseline; gap: 10px; }
+.logo-main { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; white-space: nowrap; line-height: 1; text-transform: uppercase; color: white; }
+.logo-sub { font-size: 14px; color: #a0aec0; font-weight: 400; line-height: 1; }
+.nav-links { display: flex; gap: 20px; align-items: center; }
+.nav-links a { color: white; text-decoration: none; font-size: 13px; font-weight: 600; transition: color 0.2s; line-height: 1; }
+.nav-links a:hover { color: #e2e8f0; }
+.nav-links a.portal-link { color: #a0aec0 !important; margin-left: 10px; }
 
 @media (max-width: 768px) { .expense-stat-grid { grid-template-columns: 1fr; } }

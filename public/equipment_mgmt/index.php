@@ -47,7 +47,7 @@ $equipments = $stmt->fetchAll();
 <body>
     <?php include __DIR__ . '/navbar.php'; ?>
     <div class="container">
-        <h2 class="section-title">備品管理ダッシュボード</h2>
+        <h2 class="section-title">備品管理</h2>
 
         <?php if($message): ?>
             <div style="padding: 15px; background: #e6fffa; color: #2c7a7b; border: 1px solid #b2f5ea; border-radius: 8px; margin-bottom: 20px;">
