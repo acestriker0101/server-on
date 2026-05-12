@@ -166,10 +166,10 @@ if ($balance['grant_date']) {
             <div class="card" style="text-align:center; display:flex; flex-direction:column; justify-content:center;">
                 <span class="info-label">現在の有給残数</span>
                 <div style="font-size:56px; font-weight:800; color:#38a169;">
-                    <?= number_format($balance['total_days'] - $balance['used_days'], 1) ?> <span style="font-size:16px;">日</span>
+                    <?= number_format($earned['total_active'] - $balance['used_days'], 1) ?> <span style="font-size:16px;">日</span>
                 </div>
                 <div style="margin-top:15px; padding:15px; background:#f8fafc; border-radius:8px; display:flex; justify-content:space-around;">
-                    <div><span class="info-label">付与合計</span><span class="info-val"><?= (float)$balance['total_days'] ?>日</span></div>
+                    <div><span class="info-label">付与合計（自動）</span><span class="info-val"><?= (float)$earned['total_active'] ?>日</span></div>
                     <div><span class="info-label">消化済み</span><span class="info-val"><?= (float)$balance['used_days'] ?>日</span></div>
                 </div>
                 <?php if($balance['grant_date']): ?>
@@ -185,14 +185,12 @@ if ($balance['grant_date']) {
                     入社日: <?= $target_info['hire_date'] ?: '未登録' ?> | 
                     有効な有休合計（過去2年分）: <strong style="font-size:14px;"><?= $earned['total_active'] ?>日</strong> 
                     <span style="font-size:11px;">(うち直近付与分: <?= $earned['current'] ?>日)</span>
-                    <?php if($target_info['hire_date']): ?>
-                        <button type="button" onclick="document.getElementById('total-in').value='<?= $earned['total_active'] ?>'" style="margin-top:5px; background:white; border:1px solid #3182ce; border-radius:4px; padding:3px 8px; cursor:pointer; color:#3182ce; font-weight:bold;">この日数を適用する</button>
-                    <?php endif; ?>
+                    <div style="margin-top:5px; color:#3182ce; font-weight:bold;">※現在の有休残数は、こちらの自動計算された付与合計を基に算出されています。</div>
                 </div>
                 <form method="POST">
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px;">
-                        <div><label class="info-label">付与合計日数</label><input type="number" step="0.5" name="total_days" id="total-in" class="t-input" value="<?= $balance['total_days'] ?>"></div>
-                        <div><label class="info-label">消化済み日数</label><input type="number" step="0.5" name="used_days" class="t-input" value="<?= $balance['used_days'] ?>"></div>
+                    <input type="hidden" name="total_days" value="<?= $earned['total_active'] ?>">
+                    <div style="display:grid; grid-template-columns: 1fr; gap:10px; margin-bottom:15px;">
+                        <div><label class="info-label">消化済み日数 (手動調整)</label><input type="number" step="0.5" name="used_days" class="t-input" value="<?= $balance['used_days'] ?>"></div>
                     </div>
                     <div style="margin-bottom:15px;"><label class="info-label">今回の付与日</label><input type="date" name="grant_date" class="t-input" value="<?= $balance['grant_date'] ?>"></div>
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:20px;">

@@ -190,8 +190,8 @@ $is_limit_reached = ($max_staff !== -1 && $current_staff_count >= $max_staff);
             <span class="logo-sub" style="margin-left: 5px; color: #a0aec0;">人事・組織管理</span>
         </div>
         <div class="nav-links">
-            <a href="/hr_mgmt/workflows" style="color:#718096; text-decoration:none; margin-right:15px; font-size:13px; font-weight:700;">承認ルート設定</a>
-            <a href="/portal/" style="color:#718096; text-decoration:none; font-size:13px;">ポータルに戻る</a>
+            <a href="/hr_mgmt/workflows">承認ルート設定</a>
+            <a href="/portal/" class="portal-link">ポータルに戻る</a>
         </div>
     </nav>
 

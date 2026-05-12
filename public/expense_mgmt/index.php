@@ -96,7 +96,10 @@ if ($is_admin_access) {
 </head>
 <body>
     <nav>
-        <div style="font-size:20px; font-weight:800; color:var(--primary);">SERVER-ON <span style="font-weight:400; font-size:14px; color:#64748b;">経費精算</span></div>
+        <div class="logo-area">
+            <span class="logo-main">SERVER-ON</span>
+            <span class="logo-sub" style="margin-left: 5px; color: #64748b;">交通費・経理管理</span>
+        </div>
         <div class="nav-links">
             <a href="/portal/" class="portal-link">ポータルに戻る</a>
         </div>

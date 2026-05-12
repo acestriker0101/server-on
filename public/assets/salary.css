@@ -24,7 +24,12 @@ body { font-family: 'Outfit', 'Inter', sans-serif; background: var(--bg-main); c
 .btn-ui { display: inline-flex; align-items:center; justify-content:center; padding: 10px 20px; border-radius: 6px; font-weight: 700; font-size: 13px; text-decoration: none; cursor: pointer; transition: 0.2s; border: none; background: var(--primary); color: white; }
 .btn-ui:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
-nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: white; border-bottom: 1px solid var(--border); }
-.nav-links a { color: #64748b; text-decoration: none; margin-left: 20px; font-size: 14px; font-weight: 600; }
+nav { background: #2d3748; color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+.logo-area { display: flex; align-items: baseline; }
+.logo-main { font-weight: 900; font-size: 20px; letter-spacing: 1px; color: var(--primary); }
+.logo-sub { font-weight: 700; font-size: 13px; color: #cbd5e1; margin-left: 8px; }
+.nav-links a { color: white; text-decoration: none; margin-left: 20px; font-size: 14px; font-weight: 600; transition: color 0.2s; }
+.nav-links a:hover { color: var(--primary); }
+.portal-link { color: white !important; font-weight: 800 !important; }
 
 @media print { nav { display:none; } .container { margin:0; padding:0; } .card { border:none; box-shadow:none; } }
