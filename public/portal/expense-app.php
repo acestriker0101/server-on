@@ -91,16 +91,20 @@ $comparison_notes = [
             .feature-image { order: -1; }
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 </head>
 <body>
     <div class="container" style="max-width: 1200px;">
+        
         <nav>
             <div class="logo-area">
-                <a href="/" style="text-decoration:none;"><span class="logo-main" style="color:#2d3748;">SERVER-ON</span></a>
+                <a href="/" style="text-decoration:none;"><span class="logo-main">SERVER-ON</span></a>
+                <span class="logo-sub"><?= htmlspecialchars($app_name ?? "") ?></span>
             </div>
+            <div class="menu-toggle"><span></span><span></span><span></span></div>
             <div class="nav-right">
                 <a href="/portal/login">ログイン</a>
-                <a href="/portal/register" class="btn-primary" style="background: var(--primary-color);">無料登録</a>
+                <a href="/portal/register" class="nav-link active">無料登録</a>
             </div>
         </nav>
 
@@ -112,63 +116,38 @@ $comparison_notes = [
             </div>
         </header>
 
+        
         <section id="features">
             <h2 class="section-title-sub">主な機能</h2>
-            <?php foreach ($app_features as $feature): ?>
-                <div class="feature-block <?= ($feature['direction'] === 'right') ? 'right-image' : '' ?>">
-                    <div class="feature-content">
-                        <h2><?= htmlspecialchars($feature['title']) ?></h2>
-                        <p style="line-height: 2; color: #4a5568; font-size: 16px;"><?= htmlspecialchars($feature['description']) ?></p>
-                    </div>
-                    <div class="feature-image">
-                        <div style="width:100%; height:300px; background:#edf2f7; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#a0aec0; font-size:14px;">機能イメージ準備中</div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </section>
-
-        <section class="comparison-wrapper">
-            <h2 class="section-title-sub">プラン比較</h2>
-            <div style="overflow-x: auto;">
-                <table class="comp-table">
-                    <thead>
-                        <tr>
-                            <th>機能 / プラン</th>
-                            <th>ベーシック</th>
-                            <th>スタンダード</th>
-                            <th>プロ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($comparison as $row): ?>
-                        <tr>
-                            <td><?= $row['label'] ?></td>
-                             <td>
-                                 <?php if($row['basic'] === '✔'): ?><span class="check-mark">✔</span>
-                                 <?php elseif($row['basic'] === '—'): ?><span class="cross-mark">ー</span>
-                                 <?php else: ?><?= $row['basic'] ?><?php endif; ?>
-                             </td>
-                             <td>
-                                 <?php if($row['std'] === '✔'): ?><span class="check-mark">✔</span>
-                                 <?php elseif($row['std'] === '—'): ?><span class="cross-mark">ー</span>
-                                 <?php else: ?><?= $row['std'] ?><?php endif; ?>
-                             </td>
-                             <td>
-                                 <?php if($row['pro'] === '✔'): ?><span class="check-mark">✔</span>
-                                 <?php elseif($row['pro'] === '—'): ?><span class="cross-mark">ー</span>
-                                 <?php else: ?><?= $row['pro'] ?><?php endif; ?>
-                             </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <div style="margin-top: 20px; font-size: 13px; color: #718096;">
-                    <?php foreach ($comparison_notes as $note): ?>
-                        <p><?= htmlspecialchars($note) ?></p>
+            <div class="swiper featuresSwiper" style="padding-bottom: 40px; --swiper-theme-color: var(--primary-color);">
+                <div class="swiper-wrapper">
+                    <?php foreach ($app_features as $feature): ?>
+                        <div class="swiper-slide">
+                            <div class="feature-block <?= ($feature['direction'] === 'right') ? 'right-image' : '' ?>" style="margin-bottom:0; box-shadow:none; border:none; background:transparent;">
+                                <div class="feature-content">
+                                    <h2><?= htmlspecialchars($feature['title']) ?></h2>
+                                    <p style="line-height: 2; color: #4a5568; font-size: 16px;"><?= htmlspecialchars($feature['description']) ?></p>
+                                </div>
+                                <div class="feature-image">
+                                    <div style="width:100%; height:300px; background:#edf2f7; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#a0aec0; font-size:14px;">
+                                        <?php if(!empty($feature['image'])): ?>
+                                            <img src="<?= htmlspecialchars($feature['image']) ?>" alt="機能イメージ" style="width:100%; height:100%; object-fit:cover; border-radius:12px;">
+                                        <?php else: ?>
+                                            機能イメージ準備中
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <?php endforeach; ?>
                 </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
             </div>
         </section>
+
+        
 
         <section class="cta-bottom">
             <h2 style="font-size: 32px; margin-bottom: 20px; color: #2d3748;">まずは、30日間の無料体験から。</h2>
@@ -180,5 +159,25 @@ $comparison_notes = [
             <p>&copy; 2026 Handliberte. All rights reserved.</p>
         </footer>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var swiper = new Swiper(".featuresSwiper", {
+                navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+                pagination: { el: ".swiper-pagination", clickable: true },
+                loop: true,
+                autoplay: { delay: 5000, disableOnInteraction: false },
+                autoHeight: true
+            });
+
+            const menuToggle = document.querySelector(".menu-toggle");
+            if(menuToggle) {
+                menuToggle.addEventListener("click", function() {
+                    document.querySelector(".nav-right").classList.toggle("open");
+                });
+            }
+        });
+    </script>
 </body>
 </html>

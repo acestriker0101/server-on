@@ -91,7 +91,7 @@
     <div class="container">
         <nav>
             <div class="logo-area">
-                <span class="logo-main">SERVER-ON</span>
+                <a href="/" style="text-decoration:none;"><span class="logo-main">SERVER-ON</span></a>
                 <span class="logo-sub">プラットフォーム</span>
             </div>
             <div class="menu-toggle"><span></span><span></span><span></span></div>
@@ -197,6 +197,40 @@
                 <a href="/portal/register" class="btn-primary" style="background:#3182ce; display: inline-block;">今すぐ試す</a>
             </div>
         </div>
+
+        <section class="comparison-wrapper" style="margin: 100px 0;">
+            <h2 class="section-title" style="text-align:center;">総合プラン比較表</h2>
+            <p style="text-align:center; color: #4a5568; margin-bottom: 40px;">
+                在庫管理以外の全アプリ（人事・勤怠・交通費・給与・備品）がすべて使えるお得な統合プランです。<br>
+                <strong style="color: #e53e3e;">※在庫管理は別契約となります。在庫管理の料金は機能詳細ページをご確認ください。</strong>
+            </p>
+            <div style="overflow-x: auto;">
+                <table class="comp-table" style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.05);">
+                    <thead>
+                        <tr>
+                            <th style="padding: 25px; text-align: left; background: #f8fafc; color: #4a5568; font-weight: bold; font-size: 14px; border-bottom: 1px solid #edf2f7; width: 250px;">プラン</th>
+                            <th style="padding: 25px; text-align: center; background: #f8fafc; color: #4a5568; font-weight: bold; font-size: 14px; border-bottom: 1px solid #edf2f7;">ベーシック</th>
+                            <th style="padding: 25px; text-align: center; background: #f8fafc; color: #4a5568; font-weight: bold; font-size: 14px; border-bottom: 1px solid #edf2f7;">スタンダード</th>
+                            <th style="padding: 25px; text-align: center; background: #f8fafc; color: #4a5568; font-weight: bold; font-size: 14px; border-bottom: 1px solid #edf2f7;">プロ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 25px; font-weight: bold; color: #2d3748; background: #fcfdfe; border-bottom: 1px solid #edf2f7;">月額料金（税込）</td>
+                            <td style="padding: 25px; text-align: center; border-bottom: 1px solid #edf2f7;">¥25,000</td>
+                            <td style="padding: 25px; text-align: center; border-bottom: 1px solid #edf2f7;">¥40,000</td>
+                            <td style="padding: 25px; text-align: center; border-bottom: 1px solid #edf2f7;">¥99,000</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 25px; font-weight: bold; color: #2d3748; background: #fcfdfe; border-bottom: 1px solid #edf2f7;">スタッフ登録数上限</td>
+                            <td style="padding: 25px; text-align: center; border-bottom: 1px solid #edf2f7;">5名</td>
+                            <td style="padding: 25px; text-align: center; border-bottom: 1px solid #edf2f7;">10名</td>
+                            <td style="padding: 25px; text-align: center; border-bottom: 1px solid #edf2f7;">無制限</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
         <section class="news-section">
             <h2 class="section-title">お知らせ</h2>

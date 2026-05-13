@@ -118,11 +118,16 @@ $comparison_notes = [
             .comp-table td:first-child { width: 120px; }
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 </head>
 <body>
     <div class="container" style="max-width: 1200px;">
+        
         <nav>
-            <div class="logo"><a href="/landing">SERVER-ON</a></div>
+            <div class="logo-area">
+                <a href="/" style="text-decoration:none;"><span class="logo-main">SERVER-ON</span></a>
+                <span class="logo-sub"><?= htmlspecialchars($app_name ?? "") ?></span>
+            </div>
             <div class="menu-toggle"><span></span><span></span><span></span></div>
             <div class="nav-right">
                 <a href="/portal/login">ログイン</a>
@@ -138,19 +143,35 @@ $comparison_notes = [
             </div>
         </header>
 
+        
         <section id="features">
             <h2 class="section-title-sub">主な機能</h2>
-            <?php foreach ($app_features as $feature): ?>
-                <div class="feature-block <?= ($feature['direction'] === 'right') ? 'right-image' : '' ?>">
-                    <div class="feature-content">
-                        <h2><?= htmlspecialchars($feature['title']) ?></h2>
-                        <p style="line-height: 2; color: #4a5568; font-size: 16px;"><?= htmlspecialchars($feature['description']) ?></p>
-                    </div>
-                    <div class="feature-image">
-                        <img src="<?= htmlspecialchars($feature['image']) ?>" alt="<?= htmlspecialchars($feature['title']) ?>">
-                    </div>
+            <div class="swiper featuresSwiper" style="padding-bottom: 40px; --swiper-theme-color: var(--primary-color);">
+                <div class="swiper-wrapper">
+                    <?php foreach ($app_features as $feature): ?>
+                        <div class="swiper-slide">
+                            <div class="feature-block <?= ($feature['direction'] === 'right') ? 'right-image' : '' ?>" style="margin-bottom:0; box-shadow:none; border:none; background:transparent;">
+                                <div class="feature-content">
+                                    <h2><?= htmlspecialchars($feature['title']) ?></h2>
+                                    <p style="line-height: 2; color: #4a5568; font-size: 16px;"><?= htmlspecialchars($feature['description']) ?></p>
+                                </div>
+                                <div class="feature-image">
+                                    <div style="width:100%; height:300px; background:#edf2f7; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#a0aec0; font-size:14px;">
+                                        <?php if(!empty($feature['image'])): ?>
+                                            <img src="<?= htmlspecialchars($feature['image']) ?>" alt="機能イメージ" style="width:100%; height:100%; object-fit:cover; border-radius:12px;">
+                                        <?php else: ?>
+                                            機能イメージ準備中
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
-            <?php endforeach; ?>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
         </section>
 
         <section class="comparison-wrapper">
@@ -211,6 +232,26 @@ $comparison_notes = [
     <script>
         document.querySelector('.menu-toggle').addEventListener('click', function() {
             document.querySelector('.nav-right').classList.toggle('open');
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var swiper = new Swiper(".featuresSwiper", {
+                navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+                pagination: { el: ".swiper-pagination", clickable: true },
+                loop: true,
+                autoplay: { delay: 5000, disableOnInteraction: false },
+                autoHeight: true
+            });
+
+            const menuToggle = document.querySelector(".menu-toggle");
+            if(menuToggle) {
+                menuToggle.addEventListener("click", function() {
+                    document.querySelector(".nav-right").classList.toggle("open");
+                });
+            }
         });
     </script>
 </body>
