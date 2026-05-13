@@ -12,7 +12,7 @@ $app_features = [
     [
         'title' => '柔軟な承認ルート（ワークフロー）設定',
         'description' => '申請の種類や金額、役職に応じた複雑な承認ルートも簡単に設定。誰がどの順番で承認するかを視覚的に構築し、決裁のスピードを向上させます。',
-        'image' => '/assets/img/hr_workflow.png',
+        'image' => '/assets/img/hr_org.png',
         'direction' => 'right'
     ],
 ];

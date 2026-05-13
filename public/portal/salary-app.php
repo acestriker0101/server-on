@@ -6,13 +6,13 @@ $app_features = [
     [
         'title' => '給与明細の自動生成',
         'description' => '勤怠や交通費精算のデータと連動し、給与明細を自動で作成。税金や保険料の計算もサポートし、手作業によるミスをなくします。',
-        'image' => '/assets/img/salary_auto.png',
+        'image' => '/assets/img/salary_list.png',
         'direction' => 'left'
     ],
     [
         'title' => 'スマホでいつでも確認',
         'description' => 'ペーパーレス化を推進し、スタッフは自分のスマホからいつでも給与明細を確認できます。過去の履歴も一覧表示。',
-        'image' => '/assets/img/salary_view.png',
+        'image' => '/assets/img/salary_list.png',
         'direction' => 'right'
     ],
 ];

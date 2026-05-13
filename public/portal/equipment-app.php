@@ -12,19 +12,19 @@ $app_features = [
     [
         'title' => 'コストとライフサイクルの管理',
         'description' => '購入日や価格、修理履歴を記録。資産の価値と更新時期を適切に判断できます。',
-        'image' => '/assets/img/equipment_cost.png',
+        'image' => '/assets/img/equipment_list.png',
         'direction' => 'right'
     ],
     [
         'title' => '消耗品管理もスムーズに',
         'description' => 'オフィス用品や清掃用具などの消耗在庫も管理。在庫不足を未然に防ぎ、発注漏れをゼロにします。',
-        'image' => '/assets/img/equipment_consumables.png',
+        'image' => '/assets/img/equipment_list.png',
         'direction' => 'left'
     ],
     [
         'title' => '高度な分析レポート',
         'description' => 'プロプランなら、資産の減価償却や維持費用の推移をグラフで可視化。将来の買い替え計画をデータに基づいて策定できます。',
-        'image' => '/assets/img/equipment_analysis.png',
+        'image' => '/assets/img/equipment_list.png',
         'direction' => 'right'
     ],
 ];

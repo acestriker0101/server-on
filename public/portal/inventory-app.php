@@ -6,25 +6,25 @@ $app_features = [
     [
         'title' => '現場で完結する入出庫管理',
         'description' => 'PCはもちろん、スマートフォンからその場で入出庫の記録が可能。プロプランなら最大10件の一括入力に対応し、作業時間を大幅に短縮します。',
-        'image' => '/assets/img/inventory_input.png',
+        'image' => '/assets/img/inventory_list.png',
         'direction' => 'left'
     ],
     [
         'title' => '在庫状況のリアルタイム把握',
         'description' => '現在の在庫数や単価、資産価値をいつでも確認可能。過剰在庫の防止や適正な発注タイミングの判断を強力にサポートします。',
-        'image' => '/assets/img/inventory_status.png',
+        'image' => '/assets/img/inventory_list.png',
         'direction' => 'right'
     ],
     [
         'title' => '経営を支える在庫分析',
         'description' => 'プロプランでは、在庫の資産価値や構成比をビジュアル化。死に筋商品を特定し、キャッシュフローの改善に直結するインサイトを提供します。印刷用レポート作成も1クリックです。',
-        'image' => '/assets/img/inventory_analysis.png',
+        'image' => '/assets/img/inventory_list.png',
         'direction' => 'left'
     ],
     [
         'title' => '効率的なマスタ管理',
         'description' => '商品や仕入先の情報を一元管理。プロプランならJANコードの登録やCSVによる一括インポート・エクスポートにも対応し、膨大なデータ管理を効率化します。',
-        'image' => '/assets/img/inventory_items.png',
+        'image' => '/assets/img/inventory_list.png',
         'direction' => 'right'
     ],
 ];

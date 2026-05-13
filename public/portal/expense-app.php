@@ -6,13 +6,13 @@ $app_features = [
     [
         'title' => 'スマホで簡単経費精算',
         'description' => '領収書の写真を撮ってスマホからそのまま申請。面倒な経費精算の時間を削減し、本来の業務に集中できます。',
-        'image' => '/assets/img/expense_mobile.png',
+        'image' => '/assets/img/expense_list.png',
         'direction' => 'left'
     ],
     [
         'title' => '交通費の自動計算',
         'description' => '定期区間の設定や、日々の訪問先への交通費を自動で計算。承認ルートとも連動し、経理部門の確認作業を大幅に減らします。',
-        'image' => '/assets/img/expense_transport.png',
+        'image' => '/assets/img/expense_list.png',
         'direction' => 'right'
     ],
 ];
